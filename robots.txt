@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://portfolio-9vfzpe332-brahmi-abbes-projects.vercel.app/sitemap.xml
