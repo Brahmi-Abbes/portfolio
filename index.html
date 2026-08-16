@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" dir="ltr">
 
 <head>
   <meta charset="UTF-8">
@@ -29,26 +29,33 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap"
+    href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Cairo:wght@400;500;600;700;800&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
-  <a class="skip-link" href="#main">Skip to content</a>
+  <a class="skip-link" href="#main" data-i18n="skipLink">Skip to content</a>
 
   <header class="site-header" id="navbar">
     <nav class="nav-wrap" aria-label="Primary navigation">
-      <a class="wordmark" href="#top">Brahmi Abbes</a>
+      <a class="wordmark" href="#top" data-i18n="name">Brahmi Abbes</a>
 
       <div class="nav-links" aria-label="Site sections">
-        <a href="#work">Work</a>
-        <a href="#about">About</a>
-        <a href="#contact">Contact</a>
+        <a href="#work" data-i18n="nav.work">Work</a>
+        <a href="#about" data-i18n="nav.about">About</a>
+        <a href="#contact" data-i18n="nav.contact">Contact</a>
       </div>
 
-      <a class="nav-github" href="https://github.com/Brahmi-Abbes" target="_blank" rel="noopener noreferrer">GitHub
-        <span aria-hidden="true">↗</span></a>
+      <div class="nav-right">
+        <a class="nav-github" href="https://github.com/Brahmi-Abbes" target="_blank" rel="noopener noreferrer"><span
+            data-i18n="nav.github">GitHub</span> <span aria-hidden="true">↗</span></a>
+        <button class="lang-toggle" id="lang-toggle" type="button" aria-label="Switch language">
+          <span class="lang-toggle-option" data-lang-option="en">EN</span>
+          <span class="lang-toggle-sep">/</span>
+          <span class="lang-toggle-option" data-lang-option="ar">AR</span>
+        </button>
+      </div>
 
       <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false"
         aria-controls="mobile-menu">
@@ -56,23 +63,33 @@
       </button>
     </nav>
     <div class="mobile-menu" id="mobile-menu" hidden>
-      <a href="#work">Work</a>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
-      <a href="https://github.com/Brahmi-Abbes" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+      <a href="#work" data-i18n="nav.work">Work</a>
+      <a href="#about" data-i18n="nav.about">About</a>
+      <a href="#contact" data-i18n="nav.contact">Contact</a>
+      <a href="https://github.com/Brahmi-Abbes" target="_blank" rel="noopener noreferrer"><span
+          data-i18n="nav.github">GitHub</span> ↗</a>
+      <button class="lang-toggle lang-toggle-mobile" id="lang-toggle-mobile" type="button" aria-label="Switch language">
+        <span class="lang-toggle-option" data-lang-option="en">English</span>
+        <span class="lang-toggle-sep">/</span>
+        <span class="lang-toggle-option" data-lang-option="ar">العربية</span>
+      </button>
     </div>
   </header>
 
   <main id="main">
     <section class="intro" id="top" aria-labelledby="intro-title">
-      <div class="intro-meta">Based in Algeria <span>·</span> Available for new projects and opportunities</div>
-      <h1 id="intro-title">Brahmi Abbes</h1>
-      <p class="intro-role">Web Developer <span aria-hidden="true">·</span> Laravel Backend</p>
+      <div class="intro-meta"><span data-i18n="hero.meta1">Based in Algeria</span> <span>·</span> <span
+          data-i18n="hero.meta2">Available for new projects and opportunities</span></div>
+      <h1 id="intro-title" data-i18n="name">Brahmi Abbes</h1>
+      <p class="intro-role"><span data-i18n="hero.role1">Web Developer</span> <span aria-hidden="true">·</span>
+        <span data-i18n="hero.role2">Laravel Backend</span>
+      </p>
       <div class="intro-bottom">
-        <p>I build backend systems and full-stack applications that are reliable, well-tested, and built to scale — from
-          database design to the interface.</p>
+        <p data-i18n="hero.pitch">I build backend systems and full-stack applications that are reliable, well-tested,
+          and built to scale — from database design to the interface.</p>
         <div class="intro-links">
-          <a class="text-link text-link-strong" href="#work">View my work <span aria-hidden="true">↓</span></a>
+          <a class="text-link text-link-strong" href="#work"><span data-i18n="hero.ctaWork">View my work</span> <span
+              aria-hidden="true">↓</span></a>
           <a class="text-link" href="https://www.linkedin.com/in/brahmi-abbes-apo/" target="_blank"
             rel="noopener noreferrer">LinkedIn <span aria-hidden="true">↗</span></a>
         </div>
@@ -80,18 +97,19 @@
     </section>
 
     <section class="work-section" id="work" aria-labelledby="work-title">
-      <div class="section-kicker"><span>Selected work</span><span>02 projects</span></div>
-      <h2 id="work-title" class="visually-hidden">Selected work</h2>
+      <div class="section-kicker"><span data-i18n="work.kicker">Selected work</span><span data-i18n="work.count">02
+          projects</span></div>
+      <h2 id="work-title" class="visually-hidden" data-i18n="work.kicker">Selected work</h2>
 
       <article class="project project-pharmacera" aria-labelledby="pharmacera-title">
         <div class="project-heading">
           <p class="project-number">01</p>
           <div>
-            <p class="project-type">Pharmacy management system</p>
+            <p class="project-type" data-i18n="pharmacera.type">Pharmacy management system</p>
             <h3 id="pharmacera-title">Pharmacera</h3>
           </div>
-          <p class="project-summary">Inventory, sales and reporting in one Laravel application—built to handle the
-            practical rules behind a pharmacy.</p>
+          <p class="project-summary" data-i18n="pharmacera.summary">Inventory, sales and reporting in one Laravel
+            application—built to handle the practical rules behind a pharmacy.</p>
         </div>
 
         <div class="project-media">
@@ -102,22 +120,22 @@
           </video>
           <button class="media-expand shot-trigger" type="button" data-gallery="pharmacera" data-index="0"
             aria-label="Open Pharmacera demo in the full-screen viewer"><span class="play-triangle"
-              aria-hidden="true"></span> Open larger</button>
+              aria-hidden="true"></span> <span data-i18n="project.openLarger">Open larger</span></button>
         </div>
 
         <div class="project-details project-details-wide">
           <div>
-            <p class="detail-label">What it does</p>
-            <p>Pharmacera gives Admins, Pharmacists and Cashiers the tools to manage stock, sales and reporting with
-              role-based access.</p>
+            <p class="detail-label" data-i18n="project.whatItDoes">What it does</p>
+            <p data-i18n="pharmacera.whatItDoes">Pharmacera gives Admins, Pharmacists and Cashiers the tools to manage
+              stock, sales and reporting with role-based access.</p>
           </div>
           <div>
-            <p class="detail-label">Built around</p>
-            <p>FIFO stock management, expiry tracking, barcode sales, audit logs, low-stock email alerts and Arabic RTL,
-              French and English.</p>
+            <p class="detail-label" data-i18n="project.builtAround">Built around</p>
+            <p data-i18n="pharmacera.builtAround">FIFO stock management, expiry tracking, barcode sales, audit logs,
+              low-stock email alerts and Arabic RTL, French and English.</p>
           </div>
           <div>
-            <p class="detail-label">Stack</p>
+            <p class="detail-label" data-i18n="project.stack">Stack</p>
             <div class="tech-tags" aria-label="Pharmacera technologies">
               <span>PHP</span><span>Laravel</span><span>MySQL</span><span>Eloquent</span><span>Filament</span><span>Tailwind
                 CSS</span>
@@ -141,7 +159,8 @@
             <a class="text-link" href="https://github.com/Brahmi-Abbes/pharmacera" target="_blank"
               rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
             <a class="text-link text-link-strong" href="https://pharmacera.onrender.com/" target="_blank"
-              rel="noopener noreferrer">Live demo <span aria-hidden="true">↗</span></a>
+              rel="noopener noreferrer"><span data-i18n="project.liveDemo">Live demo</span> <span
+                aria-hidden="true">↗</span></a>
           </div>
         </div>
       </article>
@@ -149,22 +168,23 @@
       <article class="project project-devdz" aria-labelledby="devdz-title">
         <div class="project-devdz-copy">
           <p class="project-number">02</p>
-          <p class="project-type">Community platform</p>
+          <p class="project-type" data-i18n="devdz.type">Community platform</p>
           <h3 id="devdz-title">DevDz</h3>
-          <p class="project-summary">A place for Algerian developers to share projects, find jobs and ask useful
-            questions.</p>
+          <p class="project-summary" data-i18n="devdz.summary">A place for Algerian developers to share projects, find
+            jobs and ask useful questions.</p>
           <div class="project-facts">
             <div>
-              <p class="detail-label">Features</p>
-              <p>Projects, jobs, questions, comments, voting, tags, city filtering and keyword search.</p>
+              <p class="detail-label" data-i18n="devdz.featuresLabel">Features</p>
+              <p data-i18n="devdz.features">Projects, jobs, questions, comments, voting, tags, city filtering and
+                keyword search.</p>
             </div>
             <div>
-              <p class="detail-label">Making it work</p>
-              <p>Custom authentication with sessions, CSRF and middleware; Blade components styled with Tailwind CSS.
-              </p>
+              <p class="detail-label" data-i18n="devdz.makingItWorkLabel">Making it work</p>
+              <p data-i18n="devdz.makingItWork">Custom authentication with sessions, CSRF and middleware; Blade
+                components styled with Tailwind CSS.</p>
             </div>
             <div>
-              <p class="detail-label">Stack</p>
+              <p class="detail-label" data-i18n="project.stack">Stack</p>
               <div class="tech-tags" aria-label="DevDz technologies">
                 <span>Laravel</span><span>Blade</span><span>Tailwind CSS</span><span>JavaScript</span>
               </div>
@@ -174,7 +194,8 @@
             <a class="text-link" href="https://github.com/Brahmi-Abbes/DevDz" target="_blank"
               rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
             <a class="text-link text-link-strong" href="https://devdz-production.up.railway.app/" target="_blank"
-              rel="noopener noreferrer">Live demo <span aria-hidden="true">↗</span></a>
+              rel="noopener noreferrer"><span data-i18n="project.liveDemo">Live demo</span> <span
+                aria-hidden="true">↗</span></a>
           </div>
         </div>
 
@@ -187,7 +208,7 @@
             </video>
             <button class="media-expand shot-trigger" type="button" data-gallery="devdz" data-index="0"
               aria-label="Open DevDz demo in the full-screen viewer"><span class="play-triangle"
-                aria-hidden="true"></span> Open larger</button>
+                aria-hidden="true"></span> <span data-i18n="project.openLarger">Open larger</span></button>
           </div>
           <div class="media-strip" aria-label="More DevDz screenshots">
             <button class="shot-trigger" type="button" data-gallery="devdz" data-index="1"><img
@@ -205,33 +226,36 @@
     </section>
 
     <section class="about-section" id="about" aria-labelledby="about-title">
-      <div class="section-kicker"><span>About</span><span>What I work with</span></div>
+      <div class="section-kicker"><span data-i18n="about.kicker">About</span><span data-i18n="about.kicker2">What I work
+          with</span></div>
       <div class="about-grid">
-        <h2 id="about-title">I engineer production-ready applications, built to scale and hold up under real use.</h2>
+        <h2 id="about-title" data-i18n="about.heading">I engineer production-ready applications, built to scale and
+          hold up under real use.</h2>
         <div class="about-copy">
-          <p>I work primarily with PHP and Laravel, focused on the parts that make software dependable in production:
-            clean business logic, secure authentication, sound data modeling and automated test coverage.</p>
-          <p>I work across the full stack — from database design to the interface — and continue deepening my frontend
-            and JavaScript engineering alongside backend work.</p>
+          <p data-i18n="about.p1">I work primarily with PHP and Laravel, focused on the parts that make software
+            dependable in production: clean business logic, secure authentication, sound data modeling and automated
+            test coverage.</p>
+          <p data-i18n="about.p2">I work across the full stack — from database design to the interface — and continue
+            deepening my frontend and JavaScript engineering alongside backend work.</p>
         </div>
       </div>
       <dl class="skills-list">
         <div>
-          <dt>Backend</dt>
+          <dt data-i18n="skills.backend">Backend</dt>
           <dd><span class="skill-chip">PHP</span><span class="skill-chip">Laravel</span><span
               class="skill-chip">Eloquent</span><span class="skill-chip">Filament</span></dd>
         </div>
         <div>
-          <dt>Database</dt>
+          <dt data-i18n="skills.database">Database</dt>
           <dd><span class="skill-chip">MySQL</span><span class="skill-chip">SQLite</span></dd>
         </div>
         <div>
-          <dt>Frontend</dt>
+          <dt data-i18n="skills.frontend">Frontend</dt>
           <dd><span class="skill-chip">HTML</span><span class="skill-chip">Tailwind CSS</span><span
               class="skill-chip">JavaScript</span></dd>
         </div>
         <div>
-          <dt>Tools</dt>
+          <dt data-i18n="skills.tools">Tools</dt>
           <dd><span class="skill-chip">Git</span><span class="skill-chip">GitHub</span><span
               class="skill-chip">Docker</span><span class="skill-chip">Pest</span><span class="skill-chip">GitHub
               Actions</span></dd>
@@ -240,44 +264,51 @@
     </section>
 
     <section class="background-section" aria-labelledby="background-title">
-      <div class="section-kicker"><span id="background-title">Experience &amp; education</span><span>Learning by
-          building</span></div>
+      <div class="section-kicker"><span id="background-title" data-i18n="background.kicker">Experience &amp;
+          education</span><span data-i18n="background.kicker2">Learning by building</span></div>
       <div class="background-list">
         <article>
           <p class="background-number">01</p>
-          <p class="background-kind">Experience</p>
-          <h3>IT Department Intern</h3>
+          <p class="background-kind" data-i18n="background.experience">Experience</p>
+          <h3 data-i18n="background.internTitle">IT Department Intern</h3>
           <p class="background-place">Sonatrach — TRC / GEM Gazoduc</p>
-          <p class="background-detail">Gained exposure to enterprise IT infrastructure, day-to-day operational workflows
-            and system administration practices.</p>
+          <p class="background-detail" data-i18n="background.internDetail">Gained exposure to enterprise IT
+            infrastructure, day-to-day operational workflows and system administration practices.</p>
         </article>
         <article>
           <p class="background-number">02</p>
-          <p class="background-kind">Education</p>
-          <h3>Bachelor in AI Engineering</h3>
+          <p class="background-kind" data-i18n="background.education">Education</p>
+          <h3 data-i18n="background.degreeTitle">Bachelor in AI Engineering</h3>
           <p class="background-place">École Nationale Supérieure des Technologies Avancées, Algiers</p>
-          <p class="background-detail">Building a foundation in engineering, problem-solving and applied technology.</p>
+          <p class="background-detail" data-i18n="background.degreeDetail">Building a foundation in engineering,
+            problem-solving and applied technology.</p>
         </article>
       </div>
     </section>
 
     <section class="contact-section" id="contact" aria-labelledby="contact-title">
-      <p class="contact-kicker">Get in touch</p>
-      <h2 id="contact-title">Building something that needs a dependable backend? Let's talk.</h2>
+      <p class="contact-kicker" data-i18n="contact.kicker">Get in touch</p>
+      <h2 id="contact-title" data-i18n="contact.heading">Building something that needs a dependable backend? Let's
+        talk.</h2>
       <div class="contact-links">
         <a href="mailto:aa.brahmi@ensta.edu.dz">aa.brahmi@ensta.edu.dz</a>
-        <button id="copy-email" type="button" aria-label="Copy email address">Copy email</button>
+        <button id="copy-email" type="button" data-i18n="contact.copyEmail" data-i18n-copied="contact.copied"
+          aria-label="Copy email address">Copy email</button>
         <a href="https://github.com/Brahmi-Abbes" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
         <a href="https://www.linkedin.com/in/brahmi-abbes-apo/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
       </div>
-      <a class="resume-link" href="assets/Brahmi_Abbes_CV.pdf" download>Download CV <span
-          aria-hidden="true">↓</span></a>
+      <a class="resume-link" href="assets/Brahmi_Abbes_CV.pdf" download><span data-i18n="contact.downloadCV">Download
+          CV</span> <span aria-hidden="true">↓</span></a>
     </section>
   </main>
 
   <footer class="site-footer">
-    <span>© <span id="year"></span> Brahmi Abbes</span>
-    <span>Arabic · English</span>
+    <span>© <span id="year"></span> <span data-i18n="name">Brahmi Abbes</span></span>
+    <button class="lang-toggle lang-toggle-footer" id="lang-toggle-footer" type="button" aria-label="Switch language">
+      <span class="lang-toggle-option" data-lang-option="ar">العربية</span>
+      <span class="lang-toggle-sep">·</span>
+      <span class="lang-toggle-option" data-lang-option="en">English</span>
+    </button>
   </footer>
 
   <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Project media viewer" hidden>
@@ -288,6 +319,7 @@
     <button class="lightbox-nav lightbox-next" id="lightbox-next" type="button" aria-label="Next item">→</button>
   </div>
 
+  <script src="js/i18n.js"></script>
   <script src="js/script.js"></script>
 </body>
 

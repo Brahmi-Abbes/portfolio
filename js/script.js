@@ -117,8 +117,13 @@ if (copyEmail) {
       document.execCommand('copy');
       field.remove();
     }
-    copyEmail.textContent = 'Copied';
-    setTimeout(() => { copyEmail.textContent = 'Copy email'; }, 1600);
+    const dict = (window.__i18n && window.__i18n.translations[document.documentElement.lang]) || {};
+    copyEmail.dataset.justCopied = 'true';
+    copyEmail.textContent = dict['contact.copied'] || 'Copied';
+    setTimeout(() => {
+      delete copyEmail.dataset.justCopied;
+      copyEmail.textContent = dict['contact.copyEmail'] || 'Copy email';
+    }, 1600);
   });
 }
 

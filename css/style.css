@@ -121,9 +121,60 @@ button {
 }
 
 .nav-github {
-  justify-self: end;
   font-size: .8rem;
   font-weight: 700;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  justify-self: end;
+}
+
+.lang-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  border: 1px solid var(--line);
+  padding: .35rem .6rem;
+  background: transparent;
+  color: var(--muted);
+  font-family: "DM Mono", monospace;
+  font-size: .68rem;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+  transition: border-color .18s ease, color .18s ease;
+}
+
+.lang-toggle:hover {
+  border-color: var(--accent);
+  color: var(--ink);
+}
+
+.lang-toggle-sep {
+  color: var(--line);
+}
+
+.lang-toggle-option {
+  transition: color .18s ease, font-weight .18s ease;
+}
+
+.lang-toggle-option.is-active {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.lang-toggle-mobile {
+  margin-top: .8rem;
+  width: 100%;
+  justify-content: center;
+  padding: .65rem 0;
+}
+
+.lang-toggle-footer {
+  text-transform: none;
+  letter-spacing: 0;
 }
 
 .menu-toggle {
@@ -838,7 +889,7 @@ h1 em {
   }
 
   .nav-links,
-  .nav-github {
+  .nav-right {
     display: none;
   }
 
@@ -936,4 +987,53 @@ h1 em {
     scroll-behavior: auto !important;
     transition: none !important;
   }
+}
+
+/* ==========================================================================
+   Arabic / RTL support
+   ========================================================================== */
+
+html[lang="ar"] body {
+  font-family: "Cairo", "Manrope", Arial, sans-serif;
+}
+
+html[lang="ar"] .intro-meta,
+html[lang="ar"] .section-kicker,
+html[lang="ar"] .project-number,
+html[lang="ar"] .project-type,
+html[lang="ar"] .detail-label,
+html[lang="ar"] .background-kind,
+html[lang="ar"] .contact-kicker,
+html[lang="ar"] .site-footer,
+html[lang="ar"] .tech-line,
+html[lang="ar"] .lang-toggle,
+html[lang="ar"] .tech-tags span,
+html[lang="ar"] .skill-chip,
+html[lang="ar"] .media-expand {
+  font-family: "Cairo", "Manrope", Arial, sans-serif;
+  letter-spacing: 0;
+}
+
+html[lang="ar"] h1,
+html[lang="ar"] h2,
+html[lang="ar"] h3,
+html[lang="ar"] .wordmark {
+  font-family: "Cairo", "Manrope", Arial, sans-serif;
+  letter-spacing: 0;
+}
+
+html[dir="rtl"] .intro-meta span,
+html[dir="rtl"] .intro-role span[aria-hidden] {
+  margin: 0 .32rem;
+}
+
+html[dir="rtl"] .play-triangle {
+  border-left: 0;
+  border-right: 6px solid currentColor;
+}
+
+html[dir="rtl"] .text-link span[aria-hidden="true"],
+html[dir="rtl"] .resume-link span[aria-hidden="true"] {
+  display: inline-block;
+  transform: scaleX(-1);
 }
