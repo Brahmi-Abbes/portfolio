@@ -6,8 +6,13 @@
   --line: #c9c9be;
   --accent: #c95032;
   --accent-dark: #9d3824;
+  --accent-soft: color-mix(in srgb, var(--accent) 12%, var(--paper));
   --dark: #1d2725;
   --gutter: clamp(1.25rem, 4vw, 4.5rem);
+  --ease: cubic-bezier(.16, 1, .3, 1);
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-body: "IBM Plex Sans", Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", "DM Mono", monospace;
 }
 
 * {
@@ -19,12 +24,26 @@ html {
 }
 
 body {
+  position: relative;
   margin: 0;
   background: var(--paper);
   color: var(--ink);
-  font-family: "Manrope", Arial, sans-serif;
+  font-family: var(--font-body);
   font-size: 16px;
   line-height: 1.55;
+}
+
+/* Fixed grain layer: a cheap SVG turbulence filter blended over the whole
+   page so flat colour fields read as paper/ink rather than a flat CSS fill. */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  pointer-events: none;
+  opacity: .05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.4 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
 }
 
 button,
@@ -87,6 +106,23 @@ button {
   backdrop-filter: blur(12px);
 }
 
+.scroll-progress {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: transparent;
+}
+
+.scroll-progress span {
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: var(--accent);
+  transition: width .1s linear;
+}
+
 .nav-wrap {
   min-height: 4.6rem;
   padding: 0 var(--gutter);
@@ -97,22 +133,42 @@ button {
 }
 
 .wordmark {
-  font-size: .95rem;
-  font-weight: 800;
-  letter-spacing: -.035em;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  font-style: italic;
+  letter-spacing: -.01em;
 }
 
 .nav-links {
   display: flex;
   align-items: center;
   gap: 1.7rem;
-  font-size: .8rem;
-  font-weight: 700;
+  font-size: .85rem;
+  font-weight: 500;
 }
 
 .nav-links a,
 .nav-github {
-  transition: color .18s ease;
+  position: relative;
+  transition: color .25s var(--ease);
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -5px;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .3s var(--ease);
+}
+
+.nav-links a:hover::after {
+  transform: scaleX(1);
 }
 
 .nav-links a:hover,
@@ -121,8 +177,8 @@ button {
 }
 
 .nav-github {
-  font-size: .8rem;
-  font-weight: 700;
+  font-size: .85rem;
+  font-weight: 500;
 }
 
 .nav-right {
@@ -140,11 +196,10 @@ button {
   padding: .35rem .6rem;
   background: transparent;
   color: var(--muted);
-  font-family: "DM Mono", monospace;
+  font-family: var(--font-mono);
   font-size: .68rem;
   letter-spacing: .03em;
-  text-transform: uppercase;
-  transition: border-color .18s ease, color .18s ease;
+  transition: border-color .25s var(--ease), color .25s var(--ease);
 }
 
 .lang-toggle:hover {
@@ -157,7 +212,7 @@ button {
 }
 
 .lang-toggle-option {
-  transition: color .18s ease, font-weight .18s ease;
+  transition: color .2s var(--ease), font-weight .2s var(--ease);
 }
 
 .lang-toggle-option.is-active {
@@ -173,7 +228,6 @@ button {
 }
 
 .lang-toggle-footer {
-  text-transform: none;
   letter-spacing: 0;
 }
 
@@ -192,7 +246,7 @@ button {
   height: 1px;
   margin: .32rem 0;
   background: var(--ink);
-  transition: transform .2s ease;
+  transition: transform .2s var(--ease);
 }
 
 .menu-toggle[aria-expanded="true"] span:first-child {
@@ -212,39 +266,69 @@ button {
   display: block;
   padding: .65rem 0;
   font-size: 1.05rem;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .intro {
-  padding: clamp(2.5rem, 6vh, 4rem) var(--gutter) clamp(2.5rem, 4vw, 3.5rem);
+  padding: clamp(3.5rem, 11vh, 6.5rem) var(--gutter) clamp(4rem, 8vw, 6.5rem);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   gap: clamp(1.5rem, 4vw, 2.5rem);
   border-bottom: 1px solid var(--line);
+  overflow: hidden;
+}
+
+/* One deliberate, orchestrated entrance — a staged reveal on load rather
+   than scattered hover/scroll fades scattered through the page. */
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.intro-meta {
+  animation: reveal-up .7s var(--ease) both;
+}
+
+#intro-title {
+  animation: reveal-up .8s var(--ease) .08s both;
+}
+
+.intro-role {
+  animation: reveal-up .8s var(--ease) .16s both;
+}
+
+.intro-bottom {
+  animation: reveal-up .8s var(--ease) .24s both;
 }
 
 .intro-meta,
 .section-kicker,
-.project-number,
 .project-type,
 .detail-label,
 .background-kind,
-.contact-kicker,
+.contact-kicker {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: .92rem;
+  letter-spacing: 0;
+}
+
 .site-footer {
-  font-family: "DM Mono", monospace;
-  font-size: .69rem;
-  letter-spacing: .035em;
-  text-transform: uppercase;
+  font-family: var(--font-body);
+  font-size: .8rem;
 }
 
 .intro-meta {
   color: var(--muted);
-}
-
-.intro-meta span {
-  margin: 0 .32rem;
-  color: var(--accent);
 }
 
 h1,
@@ -254,27 +338,29 @@ p {
   margin-top: 0;
 }
 
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+}
+
 h1 {
-  max-width: 1100px;
+  max-width: 1200px;
   margin: 0;
-  font-size: clamp(2.6rem, 6.8vw, 5.75rem);
-  font-weight: 800;
-  letter-spacing: -.06em;
-  line-height: .99;
+  font-size: clamp(3rem, 9.5vw, 8rem);
+  font-weight: 600;
+  letter-spacing: -.025em;
+  line-height: .92;
+  font-variation-settings: "WONK" 1;
 }
 
 .intro-role {
   margin: .6rem 0 0;
   color: var(--accent);
-  font-family: "DM Mono", monospace;
-  font-size: clamp(.95rem, 1.6vw, 1.15rem);
-  font-weight: 500;
-  letter-spacing: -.01em;
-}
-
-h1 em {
-  color: var(--accent);
-  font-style: normal;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1.05rem, 1.8vw, 1.3rem);
+  font-weight: 400;
 }
 
 .intro-bottom {
@@ -307,8 +393,8 @@ h1 em {
   border-bottom: 1px solid var(--line);
   padding-bottom: .2rem;
   font-size: .84rem;
-  font-weight: 700;
-  transition: color .18s ease, border-color .18s ease;
+  font-weight: 600;
+  transition: color .25s var(--ease), border-color .25s var(--ease), transform .25s var(--ease);
 }
 
 .text-link:hover {
@@ -318,6 +404,12 @@ h1 em {
 
 .text-link-strong {
   border-color: var(--ink);
+}
+
+/* Primary hero CTA gets a small magnetic pull toward the cursor — motion
+   that answers the person's action, not a decorative loop. */
+.intro-links .text-link-strong {
+  will-change: transform;
 }
 
 .work-section,
@@ -335,30 +427,56 @@ h1 em {
   justify-content: space-between;
   padding-bottom: .85rem;
   border-bottom: 1px solid var(--ink);
-  color: var(--muted);
-}
-
-.section-kicker span:last-child {
   color: var(--accent);
 }
 
-.project {
-  border-bottom: 1px solid var(--ink);
-}
-
-.project-pharmacera {
-  padding: clamp(4rem, 7vw, 6.5rem) 0 3rem;
-}
-
-.project-heading {
+.project-grid {
   display: grid;
-  grid-template-columns: 8% minmax(200px, 1fr) minmax(250px, .9fr);
-  align-items: start;
-  gap: 2rem;
-  margin-bottom: 2.25rem;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: clamp(2.5rem, 5vw, 3.5rem) clamp(1.75rem, 4vw, 3rem);
+  padding-top: clamp(3rem, 6vw, 4.5rem);
 }
 
-.project-number,
+/* Cards sit very slightly askew, like prints set down on a desk rather
+   than snapped into a grid — the imperfection is the point. */
+.project-card {
+  --tilt: -0.6deg;
+  position: relative;
+  background: var(--paper-deep);
+  box-shadow: 0 22px 40px -26px rgba(30, 41, 39, .4);
+  transform: rotate(var(--tilt));
+  transition: transform .45s var(--ease), box-shadow .45s var(--ease);
+}
+
+.project-card:nth-child(2n) {
+  --tilt: 0.8deg;
+}
+
+.project-card:hover {
+  transform: rotate(0deg) translateY(-5px);
+  box-shadow: 0 30px 55px -24px rgba(30, 41, 39, .48);
+}
+
+/* A little strip of "tape" holding the print down — cheap, and reads
+   as handled rather than generated. */
+.project-card::before {
+  content: '';
+  position: absolute;
+  top: -13px;
+  left: 34px;
+  width: 62px;
+  height: 24px;
+  background: color-mix(in srgb, var(--accent) 55%, transparent);
+  transform: rotate(-4deg);
+  box-shadow: 0 2px 5px rgba(30, 41, 39, .2);
+}
+
+.project-card:nth-child(2n)::before {
+  left: auto;
+  right: 38px;
+  transform: rotate(5deg);
+}
+
 .project-type,
 .detail-label,
 .background-kind {
@@ -366,29 +484,33 @@ h1 em {
 }
 
 .project-type {
-  margin-bottom: .55rem;
+  margin-bottom: .4rem;
 }
 
-.project h3 {
+.project-card h3 {
   margin-bottom: 0;
-  font-size: clamp(3rem, 7vw, 7rem);
-  letter-spacing: -.08em;
-  line-height: .85;
+  font-size: clamp(1.7rem, 3vw, 2.3rem);
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: -.01em;
+  line-height: 1.05;
 }
 
 .project-summary {
   margin: 0;
-  padding-top: .35rem;
-  font-size: clamp(1rem, 1.5vw, 1.25rem);
-  line-height: 1.65;
+  padding-top: .5rem;
+  font-size: .96rem;
+  line-height: 1.6;
+  color: #43504b;
 }
 
 .project-media {
   position: relative;
   width: 100%;
   overflow: hidden;
-  border: 1px solid var(--ink);
   background: var(--dark);
+  transition: transform .1s linear;
+  transform-style: preserve-3d;
 }
 
 .project-video {
@@ -397,6 +519,12 @@ h1 em {
   aspect-ratio: 1.87 / 1;
   object-fit: cover;
   background: var(--dark);
+  filter: sepia(.4) hue-rotate(320deg) saturate(1.6) contrast(1.05) brightness(.95);
+  transition: filter .6s var(--ease);
+}
+
+.project-media:hover .project-video {
+  filter: none;
 }
 
 .media-expand {
@@ -410,9 +538,9 @@ h1 em {
   border: 0;
   color: white;
   background: var(--accent);
-  font-family: "DM Mono", monospace;
+  font-family: var(--font-mono);
   font-size: .72rem;
-  transition: background-color .18s ease;
+  transition: background-color .25s var(--ease);
 }
 
 .media-expand:hover {
@@ -427,18 +555,15 @@ h1 em {
   border-left: 6px solid currentColor;
 }
 
-.project-details {
-  display: grid;
-  gap: 2rem;
-  padding: 1.7rem 0 2.2rem;
+.project-card-body {
+  padding: 1.6rem 1.6rem 1.85rem;
 }
 
-.project-details-wide {
-  grid-template-columns: 1fr 1.25fr .75fr;
+.detail-block+.detail-block {
+  margin-top: 1.3rem;
 }
 
-.project-details p:last-child,
-.project-facts p:last-child {
+.detail-block p:last-child {
   margin: 0;
   color: #43504b;
   font-size: .88rem;
@@ -446,11 +571,11 @@ h1 em {
 }
 
 .detail-label {
-  margin-bottom: .45rem !important;
+  margin-bottom: .4rem !important;
 }
 
 .tech-line {
-  font-family: "DM Mono", monospace;
+  font-family: var(--font-mono);
   font-size: .76rem !important;
 }
 
@@ -458,59 +583,128 @@ h1 em {
   display: flex;
   flex-wrap: wrap;
   gap: .5rem;
+  margin-top: 1.1rem;
 }
 
 .tech-tags span,
 .skill-chip {
   display: inline-flex;
   align-items: center;
-  gap: .4rem;
-  border: 1px solid var(--ink);
-  background: var(--paper);
-  font-family: "DM Mono", monospace;
+  border: 0;
+  background: var(--accent-soft);
+  font-family: var(--font-mono);
   font-weight: 500;
   font-size: .72rem;
   letter-spacing: -.01em;
   line-height: 1;
+  transition: transform .2s var(--ease), background-color .2s var(--ease);
+}
+
+.tech-tags span:hover,
+.skill-chip:hover {
+  transform: translateY(-2px);
+  background: color-mix(in srgb, var(--cat-color, var(--accent)) 32%, var(--paper));
 }
 
 .tech-tags span {
-  padding: .48rem .65rem .48rem .55rem;
+  padding: .5rem .65rem;
   color: var(--ink);
 }
 
-.tech-tags span::before {
-  content: '';
-  width: .4rem;
-  height: .4rem;
-  background: var(--accent);
-  flex-shrink: 0;
+/* Native disclosure for the deeper case-study detail — a real control,
+   not a decorative accordion reimplemented in JS. */
+.project-more {
+  margin-top: 1.3rem;
+  border-top: 1px solid var(--line);
+  padding-top: .9rem;
 }
 
-.project-footer {
+.project-more summary {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  list-style: none;
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: .92rem;
+  color: var(--ink);
+}
+
+.project-more summary::-webkit-details-marker {
+  display: none;
+}
+
+.project-more summary::after {
+  content: '+';
+  font-family: var(--font-mono);
+  font-style: normal;
+  font-size: .95rem;
+  color: var(--accent);
+  transition: transform .25s var(--ease);
+}
+
+.project-more[open] summary::after {
+  transform: rotate(45deg);
+}
+
+.project-more-body {
+  padding-top: 1.2rem;
   display: flex;
   flex-direction: column;
-  gap: 1.6rem;
+  gap: 1.3rem;
+}
+
+.project-engineering .engineering-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: .55rem;
+}
+
+.engineering-list li {
+  position: relative;
+  padding-left: 1.1rem;
+  color: #43504b;
+  font-size: .88rem;
+  line-height: 1.65;
+}
+
+.engineering-list li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+}
+
+.project-actions {
+  margin-top: 1.4rem;
 }
 
 .media-strip {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   align-items: start;
-  gap: .6rem;
+  gap: .5rem;
   width: 100%;
-  max-width: 460px;
 }
 
 .media-strip button {
   display: block;
   position: relative;
   width: 100%;
-  height: 110px;
+  height: 72px;
   padding: 0;
   overflow: hidden;
-  border: 1px solid var(--line);
+  border: 1px solid transparent;
   background: var(--dark);
+  transition: border-color .25s var(--ease);
+}
+
+.media-strip button:hover {
+  border-color: var(--line);
 }
 
 .media-strip img {
@@ -520,70 +714,36 @@ h1 em {
   object-fit: contain;
   object-position: center;
   background: var(--dark);
-  transition: transform .3s ease, opacity .3s ease;
+  filter: sepia(.4) hue-rotate(320deg) saturate(1.6) contrast(1.05) brightness(.95);
+  transition: transform .5s var(--ease), opacity .4s var(--ease), filter .5s var(--ease);
 }
 
 .media-strip button:hover img {
   transform: scale(1.05);
-  opacity: .85;
+  opacity: 1;
+  filter: none;
 }
 
 .media-strip button::after {
   content: '+';
   position: absolute;
-  top: .4rem;
-  right: .4rem;
-  width: 1.3rem;
-  height: 1.3rem;
+  top: .3rem;
+  right: .3rem;
+  width: 1.1rem;
+  height: 1.1rem;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
   background: rgba(29, 39, 37, .6);
-  font-family: "DM Mono", monospace;
-  font-size: .85rem;
+  font-family: var(--font-mono);
+  font-size: .72rem;
   opacity: 0;
-  transition: opacity .2s ease;
+  transition: opacity .25s var(--ease);
 }
 
 .media-strip button:hover::after {
   opacity: 1;
-}
-
-.project-devdz {
-  display: grid;
-  grid-template-columns: minmax(280px, .8fr) minmax(450px, 1.2fr);
-  gap: clamp(2.5rem, 7vw, 8rem);
-  padding: clamp(4rem, 9vw, 8rem) 0 0;
-  border-bottom: 0;
-}
-
-.project-devdz-copy {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.project-devdz h3 {
-  margin: .5rem 0 1.25rem;
-}
-
-.project-devdz .project-summary {
-  padding: 0;
-}
-
-.project-facts {
-  display: grid;
-  gap: 1.3rem;
-  margin: 3rem 0 2rem;
-}
-
-.devdz-media {
-  padding-top: 1.6rem;
-}
-
-.devdz-media .media-strip {
-  margin-top: .65rem;
 }
 
 .about-section {
@@ -600,28 +760,19 @@ h1 em {
 .about-grid h2,
 .contact-section h2 {
   margin: 0;
-  font-size: clamp(2.1rem, 4.2vw, 4.75rem);
-  font-weight: 800;
-  letter-spacing: -.065em;
-  line-height: 1.06;
+  font-size: clamp(2.1rem, 4.2vw, 5rem);
+  font-weight: 500;
+  letter-spacing: -.015em;
+  line-height: 1.15;
 }
 
-.about-copy {
-  padding-top: .55rem;
-}
-
-.about-copy p {
-  color: #43504b;
-  font-size: 1rem;
-  line-height: 1.8;
-}
-
-.about-copy p:last-child {
-  margin-bottom: 0;
+.about-grid h2 {
+  grid-column: 1 / -1;
+  margin-bottom: .5rem;
 }
 
 .skills-list {
-  margin: 0;
+  margin: 3rem 0 0;
   border-top: 1px solid var(--ink);
 }
 
@@ -650,12 +801,11 @@ h1 em {
 }
 
 .skills-list dt {
-  font-family: "DM Mono", monospace;
-  font-size: .78rem;
-  font-weight: 500;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: .92rem;
+  font-weight: 400;
   color: var(--cat-color, var(--accent));
-  text-transform: uppercase;
-  letter-spacing: .03em;
 }
 
 .skills-list dd {
@@ -664,22 +814,14 @@ h1 em {
   gap: .55rem;
   margin: 0;
   font-size: .95rem;
-  font-weight: 700;
-  letter-spacing: -.02em;
+  font-weight: 600;
+  letter-spacing: -.01em;
 }
 
 .skills-list .skill-chip {
-  padding: .6rem .75rem .6rem .6rem;
+  padding: .55rem .75rem;
   color: var(--ink);
-  border-color: color-mix(in srgb, var(--cat-color, var(--ink)) 45%, var(--line));
-}
-
-.skills-list .skill-chip::before {
-  content: '';
-  width: .4rem;
-  height: .4rem;
-  background: var(--cat-color, var(--accent));
-  flex-shrink: 0;
+  background: color-mix(in srgb, var(--cat-color, var(--accent)) 15%, var(--paper));
 }
 
 .learning-note {
@@ -687,7 +829,6 @@ h1 em {
   color: var(--muted);
   font-size: .6rem;
   font-weight: 500;
-  text-transform: uppercase;
 }
 
 .background-section {
@@ -696,41 +837,47 @@ h1 em {
 
 .background-list {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1.15fr .85fr;
   gap: clamp(2rem, 8vw, 9rem);
   padding-top: clamp(3.5rem, 6vw, 5.75rem);
 }
 
+.background-list article:nth-child(2) {
+  margin-top: 3.25rem;
+}
+
 .background-list article {
+  position: relative;
   display: flex;
   min-height: 280px;
   flex-direction: column;
   padding: 0 0 1.8rem;
-  border-bottom: 1px solid var(--ink);
+  border-bottom: 1px solid var(--line);
+  transition: transform .35s var(--ease);
 }
 
-.background-number {
-  margin: 0 0 1.5rem;
+.background-list article:hover {
+  transform: translateY(-3px);
+}
+
+.background-list article:hover h3 {
   color: var(--accent);
-  font-family: "DM Mono", monospace;
-  font-size: .72rem;
-  letter-spacing: .035em;
-  text-transform: uppercase;
 }
 
 .background-list h3 {
   margin: .8rem 0 .7rem;
-  font-size: clamp(2.1rem, 3.6vw, 3.4rem);
-  line-height: 1.04;
-  letter-spacing: -.055em;
-  font-weight: 800;
+  font-size: clamp(2.1rem, 3.6vw, 3.2rem);
+  line-height: 1.08;
+  letter-spacing: -.015em;
+  font-weight: 600;
+  transition: color .3s var(--ease);
 }
 
 .background-place {
   margin-bottom: 1.6rem;
   color: var(--ink);
   font-size: 1rem;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .background-detail {
@@ -772,8 +919,8 @@ h1 em {
   color: #f6f2eb;
   background: transparent;
   font-size: .9rem;
-  font-weight: 700;
-  transition: border-color .18s ease, color .18s ease;
+  font-weight: 600;
+  transition: border-color .25s var(--ease), color .25s var(--ease);
 }
 
 .contact-links a:hover,
@@ -788,7 +935,8 @@ h1 em {
   border-bottom: 1px solid #f6f2eb;
   padding-bottom: .2rem;
   font-size: .82rem;
-  font-weight: 700;
+  font-weight: 600;
+  transition: color .25s var(--ease), border-color .25s var(--ease);
 }
 
 .resume-link:hover {
@@ -849,7 +997,7 @@ h1 em {
   border: 0;
   color: #fff;
   background: transparent;
-  font-family: "DM Mono", monospace;
+  font-family: var(--font-mono);
   font-size: .75rem;
 }
 
@@ -912,49 +1060,33 @@ h1 em {
     display: block;
   }
 
-  .project-heading,
-  .project-devdz,
+  .project-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .project-card {
+    transform: none;
+  }
+
+  .project-card::before {
+    display: none;
+  }
+
   .about-grid {
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
 
-  .project-heading {
-    grid-template-columns: auto 1fr;
-  }
-
-  .project-heading .project-summary {
-    grid-column: 1 / -1;
-  }
-
-  .project-details-wide {
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
-  }
-
-  .project-footer {
-    align-items: start;
-    flex-direction: column;
-  }
-
   .media-strip {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .project-devdz {
-    padding-top: 4rem;
-  }
-
-  .devdz-media {
-    padding-top: 0;
-  }
-
-  .devdz-media .media-strip {
-    max-width: 100%;
+    grid-template-columns: repeat(3, 1fr);
   }
 
   .about-grid {
     padding: 3.5rem 0;
+  }
+
+  .skills-list {
+    margin-top: 1.5rem;
   }
 
   .skills-list>div {
@@ -965,6 +1097,10 @@ h1 em {
   .background-list {
     grid-template-columns: 1fr;
     gap: 2.5rem;
+  }
+
+  .background-list article:nth-child(2) {
+    margin-top: 0;
   }
 
   .lightbox {
@@ -986,6 +1122,7 @@ h1 em {
   *::after {
     scroll-behavior: auto !important;
     transition: none !important;
+    animation: none !important;
   }
 }
 
@@ -994,12 +1131,11 @@ h1 em {
    ========================================================================== */
 
 html[lang="ar"] body {
-  font-family: "Cairo", "Manrope", Arial, sans-serif;
+  font-family: "Cairo", "IBM Plex Sans", Arial, sans-serif;
 }
 
 html[lang="ar"] .intro-meta,
 html[lang="ar"] .section-kicker,
-html[lang="ar"] .project-number,
 html[lang="ar"] .project-type,
 html[lang="ar"] .detail-label,
 html[lang="ar"] .background-kind,
@@ -1010,21 +1146,20 @@ html[lang="ar"] .lang-toggle,
 html[lang="ar"] .tech-tags span,
 html[lang="ar"] .skill-chip,
 html[lang="ar"] .media-expand {
-  font-family: "Cairo", "Manrope", Arial, sans-serif;
+  font-family: "Cairo", "IBM Plex Sans", Arial, sans-serif;
+  font-style: normal;
   letter-spacing: 0;
 }
 
 html[lang="ar"] h1,
 html[lang="ar"] h2,
 html[lang="ar"] h3,
-html[lang="ar"] .wordmark {
-  font-family: "Cairo", "Manrope", Arial, sans-serif;
+html[lang="ar"] .wordmark,
+html[lang="ar"] .intro-role,
+html[lang="ar"] .project h3 {
+  font-family: "Cairo", "IBM Plex Sans", Arial, sans-serif;
+  font-style: normal;
   letter-spacing: 0;
-}
-
-html[dir="rtl"] .intro-meta span,
-html[dir="rtl"] .intro-role span[aria-hidden] {
-  margin: 0 .32rem;
 }
 
 html[dir="rtl"] .play-triangle {

@@ -129,3 +129,57 @@ if (copyEmail) {
 
 const year = document.getElementById('year');
 if (year) year.textContent = new Date().getFullYear();
+
+const scrollProgressBar = document.getElementById('scroll-progress-bar');
+if (scrollProgressBar) {
+  let ticking = false;
+  const updateProgress = () => {
+    const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
+    scrollProgressBar.style.width = `${Math.min(100, Math.max(0, progress))}%`;
+    ticking = false;
+  };
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(updateProgress);
+      ticking = true;
+    }
+  }, { passive: true });
+  updateProgress();
+}
+
+// Two deliberate interaction moments — replacing generic hover fades with
+// motion that responds to where the cursor actually is. Skipped entirely
+// on touch devices and when the user has asked for reduced motion.
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+if (!prefersReducedMotion && canHover) {
+  // Primary hero CTA leans toward the cursor.
+  const magnetic = document.querySelector('.intro-links .text-link-strong');
+  if (magnetic) {
+    magnetic.addEventListener('mousemove', (event) => {
+      const rect = magnetic.getBoundingClientRect();
+      const x = event.clientX - rect.left - rect.width / 2;
+      const y = event.clientY - rect.top - rect.height / 2;
+      magnetic.style.transform = `translate(${(x * 0.25).toFixed(1)}px, ${(y * 0.25).toFixed(1)}px)`;
+    });
+    magnetic.addEventListener('mouseleave', () => {
+      magnetic.style.transform = '';
+    });
+  }
+
+  // Project media frames tilt slightly toward the cursor, like a print
+  // held up to look at rather than a flat card.
+  document.querySelectorAll('[data-tilt]').forEach((el) => {
+    el.addEventListener('mousemove', (event) => {
+      const rect = el.getBoundingClientRect();
+      const x = (event.clientX - rect.left) / rect.width - 0.5;
+      const y = (event.clientY - rect.top) / rect.height - 0.5;
+      el.style.transform = `perspective(900px) rotateX(${(-y * 5).toFixed(2)}deg) rotateY(${(x * 6).toFixed(2)}deg)`;
+    });
+    el.addEventListener('mouseleave', () => {
+      el.style.transform = '';
+    });
+  });
+}

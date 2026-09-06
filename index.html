@@ -29,15 +29,19 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Cairo:wght@400;500;600;700;800&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Cairo:wght@400;500;600;700;800&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
+  <div class="grain" aria-hidden="true"></div>
   <a class="skip-link" href="#main" data-i18n="skipLink">Skip to content</a>
 
   <header class="site-header" id="navbar">
+    <div class="scroll-progress" aria-hidden="true">
+      <span id="scroll-progress-bar"></span>
+    </div>
     <nav class="nav-wrap" aria-label="Primary navigation">
       <a class="wordmark" href="#top" data-i18n="name">Brahmi Abbes</a>
 
@@ -78,13 +82,9 @@
 
   <main id="main">
     <section class="intro" id="top" aria-labelledby="intro-title">
-      <div class="intro-meta"><span data-i18n="hero.meta1">Based in Algeria</span> <span>·</span> <span
-          data-i18n="hero.meta2">Open to remote opportunities</span></div>
+      <div class="intro-meta"><span data-i18n="hero.meta">Based in Algeria, open to remote work</span></div>
       <h1 id="intro-title" data-i18n="name">Brahmi Abbes</h1>
-      <p class="intro-role"><span data-i18n="hero.role1">Backend / Full-Stack Developer</span> <span
-          aria-hidden="true">·</span>
-        <span data-i18n="hero.role2">PHP &amp; Laravel</span>
-      </p>
+      <p class="intro-role" data-i18n="hero.role1">Backend / Full-Stack Developer</p>
       <div class="intro-bottom">
         <p data-i18n="hero.pitch">I build complete web applications with PHP, Laravel, JavaScript and modern web
           technologies, with a strong focus on backend architecture, databases, authentication and real business rules.
@@ -99,132 +99,83 @@
     </section>
 
     <section class="work-section" id="work" aria-labelledby="work-title">
-      <div class="section-kicker"><span data-i18n="work.kicker">Selected work</span><span data-i18n="work.count">02
-          projects</span></div>
+      <div class="section-kicker"><span data-i18n="work.kicker">Selected work</span></div>
       <h2 id="work-title" class="visually-hidden" data-i18n="work.kicker">Selected work</h2>
 
-      <article class="project project-pharmacera" aria-labelledby="pharmacera-title">
-        <div class="project-heading">
-          <p class="project-number">01</p>
-          <div>
+      <div class="project-grid">
+        <article class="project-card" aria-labelledby="pharmacera-title">
+          <div class="project-media" data-tilt>
+            <video class="project-video" controls preload="metadata"
+              poster="assets/images/projects/pharmacera-poster.png" aria-label="Pharmacera project walkthrough">
+              <source src="assets/videos/pharmacera-demo.mp4" type="video/mp4">
+              Your browser does not support this video.
+            </video>
+            <button class="media-expand shot-trigger" type="button" data-gallery="pharmacera" data-index="0"
+              aria-label="Open Pharmacera demo in the full-screen viewer"><span class="play-triangle"
+                aria-hidden="true"></span> <span data-i18n="project.openLarger">Open larger</span></button>
+          </div>
+
+          <div class="project-card-body">
             <p class="project-type" data-i18n="pharmacera.type">Pharmacy management system</p>
             <h3 id="pharmacera-title">Pharmacera</h3>
-          </div>
-          <p class="project-summary" data-i18n="pharmacera.summary">Inventory, sales and reporting in one Laravel
-            application—built to handle the practical rules behind a pharmacy.</p>
-        </div>
+            <p class="project-summary" data-i18n="pharmacera.summary">Inventory, sales and reporting in one Laravel
+              application—built to handle the practical rules behind a pharmacy.</p>
 
-        <div class="project-media">
-          <video class="project-video" controls preload="metadata" poster="assets/images/projects/pharmacera-poster.png"
-            aria-label="Pharmacera project walkthrough">
-            <source src="assets/videos/pharmacera-demo.mp4" type="video/mp4">
-            Your browser does not support this video.
-          </video>
-          <button class="media-expand shot-trigger" type="button" data-gallery="pharmacera" data-index="0"
-            aria-label="Open Pharmacera demo in the full-screen viewer"><span class="play-triangle"
-              aria-hidden="true"></span> <span data-i18n="project.openLarger">Open larger</span></button>
-        </div>
-
-        <div class="project-details project-details-wide">
-          <div>
-            <p class="detail-label" data-i18n="project.whatItDoes">What it does</p>
-            <p data-i18n="pharmacera.whatItDoes">Pharmacera gives Admins, Pharmacists and Cashiers the tools to manage
-              stock, sales and reporting with role-based access.</p>
-          </div>
-          <div>
-            <p class="detail-label" data-i18n="project.builtAround">Built around</p>
-            <p data-i18n="pharmacera.builtAround">FIFO stock management, expiry tracking, barcode sales, audit logs,
-              low-stock email alerts and Arabic RTL, French and English.</p>
-          </div>
-          <div>
-            <p class="detail-label" data-i18n="project.stack">Stack</p>
             <div class="tech-tags" aria-label="Pharmacera technologies">
               <span>PHP</span><span>Laravel</span><span>MySQL</span><span>Eloquent</span><span>Filament</span><span>Tailwind
                 CSS</span>
             </div>
-          </div>
-        </div>
 
-        <div class="project-engineering">
-          <p class="detail-label" data-i18n="pharmacera.engineering.title">Engineering decisions</p>
-          <ul class="engineering-list">
-            <li data-i18n="pharmacera.engineering.1">Batch-based inventory keeps stock quantities and expiry dates tied
-              to individual medicine batches.</li>
-            <li data-i18n="pharmacera.engineering.2">FIFO sales prioritize older stock when processing sales.</li>
-            <li data-i18n="pharmacera.engineering.3">Role-based access separates what Admins, Pharmacists and Cashiers
-              can do.</li>
-          </ul>
-        </div>
-
-        <div class="project-footer">
-          <div class="media-strip" aria-label="More Pharmacera screenshots">
-            <button class="shot-trigger" type="button" data-gallery="pharmacera" data-index="1"><img
-                src="assets/images/projects/pharmacera-01.png" alt="Pharmacera sale entry screen" width="1655"
-                height="886" loading="lazy"></button>
-            <button class="shot-trigger" type="button" data-gallery="pharmacera" data-index="2"><img
-                src="assets/images/projects/pharmacera-02.png" alt="Pharmacera audit log" width="1672" height="891"
-                loading="lazy"></button>
-            <button class="shot-trigger" type="button" data-gallery="pharmacera" data-index="3"><img
-                src="assets/images/projects/pharmacera-03.png" alt="Pharmacera users management screen" width="1667"
-                height="890" loading="lazy"></button>
-          </div>
-          <div class="project-actions">
-            <a class="text-link" href="https://github.com/Brahmi-Abbes/pharmacera" target="_blank"
-              rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
-            <a class="text-link text-link-strong" href="https://pharmacera.onrender.com/" target="_blank"
-              rel="noopener noreferrer"><span data-i18n="project.liveDemo">Live demo</span> <span
-                aria-hidden="true">↗</span></a>
-          </div>
-        </div>
-      </article>
-
-      <article class="project project-devdz" aria-labelledby="devdz-title">
-        <div class="project-devdz-copy">
-          <p class="project-number">02</p>
-          <p class="project-type" data-i18n="devdz.type">Community platform</p>
-          <h3 id="devdz-title">DevDz</h3>
-          <p class="project-summary" data-i18n="devdz.summary">A place for Algerian developers to share projects, find
-            jobs and ask useful questions.</p>
-          <div class="project-facts">
-            <div>
-              <p class="detail-label" data-i18n="devdz.featuresLabel">Features</p>
-              <p data-i18n="devdz.features">Projects, jobs, questions, comments, voting, tags, city filtering and
-                keyword search.</p>
-            </div>
-            <div>
-              <p class="detail-label" data-i18n="devdz.makingItWorkLabel">Making it work</p>
-              <p data-i18n="devdz.makingItWork">Custom authentication with sessions, CSRF and middleware; Blade
-                components styled with Tailwind CSS.</p>
-            </div>
-            <div>
-              <p class="detail-label" data-i18n="project.stack">Stack</p>
-              <div class="tech-tags" aria-label="DevDz technologies">
-                <span>Laravel</span><span>Blade</span><span>Tailwind CSS</span><span>JavaScript</span>
+            <details class="project-more">
+              <summary><span data-i18n="project.readMore">How it's built</span></summary>
+              <div class="project-more-body">
+                <div class="detail-block">
+                  <p class="detail-label" data-i18n="project.whatItDoes">What it does</p>
+                  <p data-i18n="pharmacera.whatItDoes">Pharmacera gives Admins, Pharmacists and Cashiers the tools to
+                    manage stock, sales and reporting with role-based access.</p>
+                </div>
+                <div class="detail-block">
+                  <p class="detail-label" data-i18n="project.builtAround">Built around</p>
+                  <p data-i18n="pharmacera.builtAround">FIFO stock management, expiry tracking, barcode sales, audit
+                    logs, low-stock email alerts and Arabic RTL, French and English.</p>
+                </div>
+                <div class="project-engineering">
+                  <p class="detail-label" data-i18n="pharmacera.engineering.title">Engineering decisions</p>
+                  <ul class="engineering-list">
+                    <li data-i18n="pharmacera.engineering.1">Batch-based inventory keeps stock quantities and expiry
+                      dates tied to individual medicine batches.</li>
+                    <li data-i18n="pharmacera.engineering.2">FIFO sales prioritize older stock when processing sales.
+                    </li>
+                    <li data-i18n="pharmacera.engineering.3">Role-based access separates what Admins, Pharmacists and
+                      Cashiers can do.</li>
+                  </ul>
+                </div>
+                <div class="media-strip" aria-label="More Pharmacera screenshots">
+                  <button class="shot-trigger" type="button" data-gallery="pharmacera" data-index="1"><img
+                      src="assets/images/projects/pharmacera-01.png" alt="Pharmacera sale entry screen" width="1655"
+                      height="886" loading="lazy"></button>
+                  <button class="shot-trigger" type="button" data-gallery="pharmacera" data-index="2"><img
+                      src="assets/images/projects/pharmacera-02.png" alt="Pharmacera audit log" width="1672"
+                      height="891" loading="lazy"></button>
+                  <button class="shot-trigger" type="button" data-gallery="pharmacera" data-index="3"><img
+                      src="assets/images/projects/pharmacera-03.png" alt="Pharmacera users management screen"
+                      width="1667" height="890" loading="lazy"></button>
+                </div>
               </div>
+            </details>
+
+            <div class="project-actions">
+              <a class="text-link" href="https://github.com/Brahmi-Abbes/pharmacera" target="_blank"
+                rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+              <a class="text-link text-link-strong" href="https://pharmacera.onrender.com/" target="_blank"
+                rel="noopener noreferrer"><span data-i18n="project.liveDemo">Live demo</span> <span
+                  aria-hidden="true">↗</span></a>
             </div>
           </div>
-          <div class="project-actions">
-            <a class="text-link" href="https://github.com/Brahmi-Abbes/DevDz" target="_blank"
-              rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
-            <a class="text-link text-link-strong" href="https://devdz-production.up.railway.app/" target="_blank"
-              rel="noopener noreferrer"><span data-i18n="project.liveDemo">Live demo</span> <span
-                aria-hidden="true">↗</span></a>
-          </div>
-          <div class="project-engineering">
-            <p class="detail-label" data-i18n="devdz.engineering.title">Engineering decisions</p>
-            <ul class="engineering-list">
-              <li data-i18n="devdz.engineering.1">Authentication and protected actions are handled through sessions,
-                CSRF protection and middleware.</li>
-              <li data-i18n="devdz.engineering.2">Users can interact with content through comments and voting while
-                access to protected actions is restricted to authenticated users.</li>
-              <li data-i18n="devdz.engineering.3">Projects, jobs and questions are separated into distinct content types
-                with keyword search, tags and city filtering.</li>
-            </ul>
-          </div>
-        </div>
+        </article>
 
-        <div class="devdz-media">
-          <div class="project-media">
+        <article class="project-card" aria-labelledby="devdz-title">
+          <div class="project-media" data-tilt>
             <video class="project-video" controls preload="metadata" poster="assets/images/projects/devdz-poster.png"
               aria-label="DevDz project walkthrough">
               <source src="assets/videos/devdz-demo.mp4" type="video/mp4">
@@ -234,31 +185,77 @@
               aria-label="Open DevDz demo in the full-screen viewer"><span class="play-triangle"
                 aria-hidden="true"></span> <span data-i18n="project.openLarger">Open larger</span></button>
           </div>
-          <div class="media-strip" aria-label="More DevDz screenshots">
-            <button class="shot-trigger" type="button" data-gallery="devdz" data-index="1"><img
-                src="assets/images/projects/devdz-01.png" alt="DevDz question and comments view" width="1663"
-                height="890" loading="lazy"></button>
-            <button class="shot-trigger" type="button" data-gallery="devdz" data-index="2"><img
-                src="assets/images/projects/devdz-02.png" alt="DevDz job search view" width="1663" height="883"
-                loading="lazy"></button>
-            <button class="shot-trigger" type="button" data-gallery="devdz" data-index="3"><img
-                src="assets/images/projects/devdz-03.png" alt="DevDz new post form" width="1662" height="892"
-                loading="lazy"></button>
+
+          <div class="project-card-body">
+            <p class="project-type" data-i18n="devdz.type">Community platform</p>
+            <h3 id="devdz-title">DevDz</h3>
+            <p class="project-summary" data-i18n="devdz.summary">A place for Algerian developers to share projects,
+              find jobs and ask useful questions.</p>
+
+            <div class="tech-tags" aria-label="DevDz technologies">
+              <span>Laravel</span><span>Blade</span><span>Tailwind CSS</span><span>JavaScript</span>
+            </div>
+
+            <details class="project-more">
+              <summary><span data-i18n="project.readMore">How it's built</span></summary>
+              <div class="project-more-body">
+                <div class="detail-block">
+                  <p class="detail-label" data-i18n="devdz.featuresLabel">Features</p>
+                  <p data-i18n="devdz.features">Projects, jobs, questions, comments, voting, tags, city filtering and
+                    keyword search.</p>
+                </div>
+                <div class="detail-block">
+                  <p class="detail-label" data-i18n="devdz.makingItWorkLabel">Making it work</p>
+                  <p data-i18n="devdz.makingItWork">Custom authentication with sessions, CSRF and middleware; Blade
+                    components styled with Tailwind CSS.</p>
+                </div>
+                <div class="project-engineering">
+                  <p class="detail-label" data-i18n="devdz.engineering.title">Engineering decisions</p>
+                  <ul class="engineering-list">
+                    <li data-i18n="devdz.engineering.1">Authentication and protected actions are handled through
+                      sessions, CSRF protection and middleware.</li>
+                    <li data-i18n="devdz.engineering.2">Users can interact with content through comments and voting
+                      while access to protected actions is restricted to authenticated users.</li>
+                    <li data-i18n="devdz.engineering.3">Projects, jobs and questions are separated into distinct
+                      content types with keyword search, tags and city filtering.</li>
+                  </ul>
+                </div>
+                <div class="media-strip" aria-label="More DevDz screenshots">
+                  <button class="shot-trigger" type="button" data-gallery="devdz" data-index="1"><img
+                      src="assets/images/projects/devdz-01.png" alt="DevDz question and comments view" width="1663"
+                      height="890" loading="lazy"></button>
+                  <button class="shot-trigger" type="button" data-gallery="devdz" data-index="2"><img
+                      src="assets/images/projects/devdz-02.png" alt="DevDz job search view" width="1663" height="883"
+                      loading="lazy"></button>
+                  <button class="shot-trigger" type="button" data-gallery="devdz" data-index="3"><img
+                      src="assets/images/projects/devdz-03.png" alt="DevDz new post form" width="1662" height="892"
+                      loading="lazy"></button>
+                </div>
+              </div>
+            </details>
+
+            <div class="project-actions">
+              <a class="text-link" href="https://github.com/Brahmi-Abbes/DevDz" target="_blank"
+                rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+              <a class="text-link text-link-strong" href="https://devdz-production.up.railway.app/" target="_blank"
+                rel="noopener noreferrer"><span data-i18n="project.liveDemo">Live demo</span> <span
+                  aria-hidden="true">↗</span></a>
+            </div>
           </div>
-        </div>
-      </article>
+        </article>
+
+        <!--
+          Third card goes here later — just copy one <article class="project-card"> block above,
+          swap the content/media/links, and it drops into the grid automatically.
+        -->
+      </div>
     </section>
 
     <section class="about-section" id="about" aria-labelledby="about-title">
-      <div class="section-kicker"><span data-i18n="about.kicker">About</span><span data-i18n="about.kicker2">What I work
-          with</span></div>
+      <div class="section-kicker"><span data-i18n="about.kicker">What I build</span></div>
       <div class="about-grid">
         <h2 id="about-title" data-i18n="about.heading">I build full-stack web applications with PHP and Laravel, with a
           strong focus on authentication, permissions, database relationships and business rules.</h2>
-        <div class="about-copy">
-          <p data-i18n="about.p1">I’m currently expanding my JavaScript and frontend skills so I can build more complete
-            full-stack applications.</p>
-        </div>
         <dl class="skills-list">
           <div>
             <dt data-i18n="skills.backend">BACKEND</dt>
@@ -280,14 +277,14 @@
                 class="skill-chip">Docker</span></dd>
           </div>
         </dl>
+      </div>
     </section>
 
     <section class="background-section" aria-labelledby="background-title">
-      <div class="section-kicker"><span id="background-title" data-i18n="background.kicker">Experience &amp;
-          education</span><span data-i18n="background.kicker2">Learning by building</span></div>
+      <div class="section-kicker"><span id="background-title" data-i18n="background.kicker">Learning by
+          building</span></div>
       <div class="background-list">
         <article>
-          <p class="background-number">01</p>
           <p class="background-kind" data-i18n="background.experience">Experience</p>
           <h3 data-i18n="background.internTitle">IT Department Intern</h3>
           <p class="background-place">Sonatrach — TRC / GEM Gazoduc</p>
@@ -295,7 +292,6 @@
             infrastructure, day-to-day operational workflows and system administration practices.</p>
         </article>
         <article>
-          <p class="background-number">02</p>
           <p class="background-kind" data-i18n="background.education">Education</p>
           <h3 data-i18n="background.degreeTitle">Bachelor in AI Engineering</h3>
           <p class="background-place">École Nationale Supérieure des Technologies Avancées, Algiers</p>
