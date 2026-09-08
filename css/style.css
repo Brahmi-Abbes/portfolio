@@ -61,7 +61,7 @@ button {
 }
 
 ::selection {
-  background: var(--accent);
+  background: var(--accent-dark);
   color: #fff;
 }
 
@@ -173,7 +173,7 @@ button {
 
 .nav-links a:hover,
 .nav-github:hover {
-  color: var(--accent);
+  color: var(--accent-dark);
 }
 
 .nav-github {
@@ -216,7 +216,7 @@ button {
 }
 
 .lang-toggle-option.is-active {
-  color: var(--accent);
+  color: var(--accent-dark);
   font-weight: 700;
 }
 
@@ -271,6 +271,7 @@ button {
 
 .intro {
   padding: clamp(3.5rem, 11vh, 6.5rem) var(--gutter) clamp(4rem, 8vw, 6.5rem);
+  padding-right: clamp(var(--gutter), 20vw, 16rem);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -347,16 +348,16 @@ h3 {
 h1 {
   max-width: 1200px;
   margin: 0;
-  font-size: clamp(3rem, 9.5vw, 8rem);
+  font-size: clamp(3.2rem, 11vw, 10.5rem);
   font-weight: 600;
-  letter-spacing: -.025em;
-  line-height: .92;
+  letter-spacing: -.03em;
+  line-height: .88;
   font-variation-settings: "WONK" 1;
 }
 
 .intro-role {
   margin: .6rem 0 0;
-  color: var(--accent);
+  color: var(--accent-dark);
   font-family: var(--font-display);
   font-style: italic;
   font-size: clamp(1.05rem, 1.8vw, 1.3rem);
@@ -398,7 +399,7 @@ h1 {
 }
 
 .text-link:hover {
-  color: var(--accent);
+  color: var(--accent-dark);
   border-color: var(--accent);
 }
 
@@ -413,9 +414,35 @@ h1 {
 }
 
 .work-section,
-.about-section,
-.background-section {
+.about-section {
   padding: clamp(4.5rem, 9vw, 8.5rem) var(--gutter);
+}
+
+.background-section {
+  padding: clamp(3.5rem, 6.5vw, 6rem) var(--gutter);
+}
+
+/* Scroll-triggered reveal — the hero already gets one deliberate entrance;
+   this extends the same "considered, not scattered" motion to the rest of
+   the page instead of leaving every other section to just appear static. */
+[data-reveal] {
+  opacity: 0;
+  transition: opacity .7s var(--ease);
+}
+
+[data-reveal].is-visible {
+  opacity: 1;
+}
+
+[data-reveal-rise] {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity .6s var(--ease), transform .6s var(--ease);
+}
+
+[data-reveal-rise].is-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .work-section {
@@ -424,37 +451,59 @@ h1 {
 
 .section-kicker {
   display: flex;
+  flex-wrap: wrap;
+  gap: .5rem 1rem;
   justify-content: space-between;
+  align-items: baseline;
   padding-bottom: .85rem;
   border-bottom: 1px solid var(--ink);
-  color: var(--accent);
+  color: var(--accent-dark);
+}
+
+.kicker-index {
+  font-family: var(--font-mono);
+  font-style: normal;
+  font-weight: 500;
+  font-size: .72rem;
+  letter-spacing: .08em;
+  color: var(--muted);
+  white-space: nowrap;
 }
 
 .project-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  align-items: start;
+  grid-template-columns: 1.15fr .85fr;
   gap: clamp(2.5rem, 5vw, 3.5rem) clamp(1.75rem, 4vw, 3rem);
   padding-top: clamp(3rem, 6vw, 4.5rem);
 }
 
-/* Cards sit very slightly askew, like prints set down on a desk rather
-   than snapped into a grid — the imperfection is the point. */
+@media (max-width: 1000px) {
+  .project-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Cards sit askew and slightly offset, like prints set down on a desk
+   rather than snapped into a grid — the imperfection is the point. */
 .project-card {
-  --tilt: -0.6deg;
+  --tilt: -1.6deg;
   position: relative;
   background: var(--paper-deep);
   box-shadow: 0 22px 40px -26px rgba(30, 41, 39, .4);
   transform: rotate(var(--tilt));
-  transition: transform .45s var(--ease), box-shadow .45s var(--ease);
+  transition: transform .45s var(--ease), box-shadow .45s var(--ease), opacity .7s var(--ease);
 }
 
 .project-card:nth-child(2n) {
-  --tilt: 0.8deg;
+  --tilt: 1.4deg;
+  margin-top: 2.75rem;
+  transition-delay: .08s;
 }
 
 .project-card:hover {
-  transform: rotate(0deg) translateY(-5px);
-  box-shadow: 0 30px 55px -24px rgba(30, 41, 39, .48);
+  transform: rotate(0deg) translateY(-8px);
+  box-shadow: 0 34px 60px -22px rgba(30, 41, 39, .5);
 }
 
 /* A little strip of "tape" holding the print down — cheap, and reads
@@ -462,13 +511,13 @@ h1 {
 .project-card::before {
   content: '';
   position: absolute;
-  top: -13px;
+  top: -14px;
   left: 34px;
-  width: 62px;
-  height: 24px;
-  background: color-mix(in srgb, var(--accent) 55%, transparent);
+  width: 68px;
+  height: 27px;
+  background: color-mix(in srgb, var(--accent) 72%, transparent);
   transform: rotate(-4deg);
-  box-shadow: 0 2px 5px rgba(30, 41, 39, .2);
+  box-shadow: 0 3px 6px rgba(30, 41, 39, .25);
 }
 
 .project-card:nth-child(2n)::before {
@@ -480,7 +529,7 @@ h1 {
 .project-type,
 .detail-label,
 .background-kind {
-  color: var(--accent);
+  color: var(--accent-dark);
 }
 
 .project-type {
@@ -519,7 +568,9 @@ h1 {
   aspect-ratio: 1.87 / 1;
   object-fit: cover;
   background: var(--dark);
-  filter: sepia(.4) hue-rotate(320deg) saturate(1.6) contrast(1.05) brightness(.95);
+  /* Muted at rest, true color on engagement — the reveal is the interaction,
+     but it never lies about what the actual product looks like. */
+  filter: grayscale(.6) contrast(1.03) brightness(.97);
   transition: filter .6s var(--ease);
 }
 
@@ -537,14 +588,14 @@ h1 {
   padding: .55rem .75rem;
   border: 0;
   color: white;
-  background: var(--accent);
+  background: var(--accent-dark);
   font-family: var(--font-mono);
   font-size: .72rem;
   transition: background-color .25s var(--ease);
 }
 
 .media-expand:hover {
-  background: var(--accent-dark);
+  background: color-mix(in srgb, var(--accent-dark) 82%, black);
 }
 
 .play-triangle {
@@ -714,7 +765,7 @@ h1 {
   object-fit: contain;
   object-position: center;
   background: var(--dark);
-  filter: sepia(.4) hue-rotate(320deg) saturate(1.6) contrast(1.05) brightness(.95);
+  filter: grayscale(.6) contrast(1.03) brightness(.97);
   transition: transform .5s var(--ease), opacity .4s var(--ease), filter .5s var(--ease);
 }
 
@@ -752,44 +803,50 @@ h1 {
 
 .about-grid {
   display: grid;
-  grid-template-columns: 1.1fr .9fr;
-  gap: clamp(2.5rem, 10vw, 12rem);
+  align-items: start;
+  grid-template-columns: 1.4fr .6fr;
+  gap: clamp(2.5rem, 8vw, 7rem);
   padding: clamp(4rem, 7vw, 6rem) 0;
 }
 
 .about-grid h2,
 .contact-section h2 {
   margin: 0;
-  font-size: clamp(2.1rem, 4.2vw, 5rem);
   font-weight: 500;
-  letter-spacing: -.015em;
+  letter-spacing: -.02em;
   line-height: 1.15;
 }
 
 .about-grid h2 {
-  grid-column: 1 / -1;
+  font-size: clamp(2.1rem, 4vw, 4.4rem);
   margin-bottom: .5rem;
 }
 
+.contact-section h2 {
+  font-size: clamp(2.1rem, 4.2vw, 5rem);
+}
+
 .skills-list {
-  margin: 3rem 0 0;
+  margin: 0;
   border-top: 1px solid var(--ink);
 }
 
 .skills-list>div {
-  display: grid;
-  grid-template-columns: 23% 1fr;
-  gap: 1rem;
-  padding: 1.5rem 0;
+  padding: 1.35rem 0;
   border-bottom: 1px solid var(--line);
 }
 
+.skills-list dt {
+  display: block;
+  margin-bottom: .7rem;
+}
+
 .skills-list>div:nth-child(1) {
-  --cat-color: var(--accent);
+  --cat-color: var(--accent-dark);
 }
 
 .skills-list>div:nth-child(2) {
-  --cat-color: #3f7d6b;
+  --cat-color: #356a5a;
 }
 
 .skills-list>div:nth-child(3) {
@@ -797,7 +854,7 @@ h1 {
 }
 
 .skills-list>div:nth-child(4) {
-  --cat-color: #4d739a;
+  --cat-color: #416182;
 }
 
 .skills-list dt {
@@ -822,6 +879,12 @@ h1 {
   padding: .55rem .75rem;
   color: var(--ink);
   background: color-mix(in srgb, var(--cat-color, var(--accent)) 15%, var(--paper));
+  transition: transform .25s var(--ease), background-color .25s var(--ease);
+}
+
+.skills-list .skill-chip:hover {
+  transform: translateY(-2px);
+  background: color-mix(in srgb, var(--cat-color, var(--accent)) 30%, var(--paper));
 }
 
 .learning-note {
@@ -844,6 +907,7 @@ h1 {
 
 .background-list article:nth-child(2) {
   margin-top: 3.25rem;
+  transition-delay: .1s;
 }
 
 .background-list article {
@@ -853,7 +917,7 @@ h1 {
   flex-direction: column;
   padding: 0 0 1.8rem;
   border-bottom: 1px solid var(--line);
-  transition: transform .35s var(--ease);
+  transition: transform .35s var(--ease), opacity .7s var(--ease);
 }
 
 .background-list article:hover {
@@ -1066,6 +1130,7 @@ h1 {
 
   .project-card {
     transform: none;
+    margin-top: 0;
   }
 
   .project-card::before {
@@ -1090,8 +1155,7 @@ h1 {
   }
 
   .skills-list>div {
-    grid-template-columns: 1fr;
-    gap: .25rem;
+    padding: 1.1rem 0;
   }
 
   .background-list {

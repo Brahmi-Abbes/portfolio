@@ -152,6 +152,25 @@ if (scrollProgressBar) {
 // motion that responds to where the cursor actually is. Skipped entirely
 // on touch devices and when the user has asked for reduced motion.
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// Scroll reveal — small, one-time fade for section content as it enters
+// view. Reduced motion or no IO support: just show everything immediately.
+const revealTargets = document.querySelectorAll('[data-reveal], [data-reveal-rise]');
+if (revealTargets.length) {
+  if (prefersReducedMotion || !('IntersectionObserver' in window)) {
+    revealTargets.forEach((el) => el.classList.add('is-visible'));
+  } else {
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+    revealTargets.forEach((el) => revealObserver.observe(el));
+  }
+}
 const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
 if (!prefersReducedMotion && canHover) {
