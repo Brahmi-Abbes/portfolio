@@ -127,6 +127,54 @@ if (copyEmail) {
   });
 }
 
+// Contact form — submits to FormSubmit.co (a hosted form endpoint) so no
+// backend or database is needed. Falls back to a normal page-load POST if
+// fetch fails; the honeypot field quietly drops bot submissions.
+const contactForm = document.querySelector('.contact-form');
+if (contactForm) {
+  const formStatus = contactForm.querySelector('.form-status');
+  const formSubmit = contactForm.querySelector('.form-submit');
+  const honeypot = contactForm.querySelector('input[name="_honey"]');
+
+  contactForm.addEventListener('submit', async (event) => {
+    if (honeypot && honeypot.value) return; // bot: let it silently fail
+    if (!contactForm.checkValidity()) return; // let native validation UI show
+
+    event.preventDefault();
+    const dict = (window.__i18n && window.__i18n.translations[document.documentElement.lang]) || {};
+
+    formSubmit.disabled = true;
+    if (formStatus) {
+      formStatus.dataset.state = 'sending';
+      formStatus.textContent = dict['contact.form.sending'] || 'Sending…';
+    }
+
+    try {
+      const response = await fetch(contactForm.action, {
+        method: 'POST',
+        body: new FormData(contactForm),
+        headers: { Accept: 'application/json' },
+      });
+      if (response.ok) {
+        contactForm.reset();
+        if (formStatus) {
+          formStatus.dataset.state = 'success';
+          formStatus.textContent = dict['contact.form.success'] || "Thanks — I'll get back to you soon.";
+        }
+      } else {
+        throw new Error('Form submission failed');
+      }
+    } catch {
+      if (formStatus) {
+        formStatus.dataset.state = 'error';
+        formStatus.textContent = dict['contact.form.error'] || 'Something went wrong. Try emailing me directly instead.';
+      }
+    } finally {
+      formSubmit.disabled = false;
+    }
+  });
+}
+
 const year = document.getElementById('year');
 if (year) year.textContent = new Date().getFullYear();
 

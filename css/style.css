@@ -451,23 +451,9 @@ h1 {
 
 .section-kicker {
   display: flex;
-  flex-wrap: wrap;
-  gap: .5rem 1rem;
-  justify-content: space-between;
-  align-items: baseline;
   padding-bottom: .85rem;
   border-bottom: 1px solid var(--ink);
   color: var(--accent-dark);
-}
-
-.kicker-index {
-  font-family: var(--font-mono);
-  font-style: normal;
-  font-weight: 500;
-  font-size: .72rem;
-  letter-spacing: .08em;
-  color: var(--muted);
-  white-space: nowrap;
 }
 
 .project-grid {
@@ -967,12 +953,139 @@ h1 {
   max-width: 850px;
 }
 
+.contact-form {
+  max-width: 640px;
+  margin: clamp(2.5rem, 5vw, 3.5rem) 0 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem 1.75rem;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+
+.form-row--full {
+  grid-column: 1 / -1;
+}
+
+.form-row label {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: .82rem;
+  color: #cfc3b8;
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: .55rem 0;
+  border: 0;
+  border-bottom: 1px solid #70807a;
+  background: transparent;
+  color: #f6f2eb;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  transition: border-color .25s var(--ease);
+}
+
+html[lang="ar"] .contact-form input,
+html[lang="ar"] .contact-form textarea {
+  font-family: "Cairo", "IBM Plex Sans", Arial, sans-serif;
+}
+
+.contact-form textarea {
+  resize: vertical;
+  min-height: 92px;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: #f0997c;
+  outline: none;
+}
+
+.form-honeypot {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.form-footer {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: .9rem;
+  margin-top: .5rem;
+}
+
+.form-submit {
+  display: inline-flex;
+  align-items: center;
+  gap: .6rem;
+  padding: .7rem 1.4rem;
+  border: 1px solid #f6f2eb;
+  background: transparent;
+  color: #f6f2eb;
+  font-family: var(--font-body);
+  font-size: .85rem;
+  font-weight: 600;
+  letter-spacing: .01em;
+  appearance: none;
+  transition: color .25s var(--ease), background-color .25s var(--ease), border-color .25s var(--ease);
+}
+
+.form-submit:hover {
+  color: var(--dark);
+  background: #f6f2eb;
+}
+
+.form-submit:disabled {
+  opacity: .55;
+  cursor: default;
+}
+
+.form-status {
+  margin: 0;
+  font-size: .85rem;
+  color: #aeb8b1;
+  opacity: 0;
+  transition: opacity .35s var(--ease);
+}
+
+.form-status:not(:empty) {
+  opacity: 1;
+}
+
+.form-status[data-state="success"] {
+  color: #8fd4b8;
+}
+
+.form-status[data-state="error"] {
+  color: #e8a598;
+}
+
+@media (max-width: 760px) {
+  .contact-form {
+    grid-template-columns: 1fr;
+  }
+}
+
 .contact-links {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: .6rem 1.25rem;
-  margin: clamp(3rem, 6vw, 5rem) 0 1.5rem;
+  margin: clamp(2.5rem, 5vw, 4rem) 0 1.5rem;
 }
 
 .contact-links a,
@@ -1209,7 +1322,8 @@ html[lang="ar"] .tech-line,
 html[lang="ar"] .lang-toggle,
 html[lang="ar"] .tech-tags span,
 html[lang="ar"] .skill-chip,
-html[lang="ar"] .media-expand {
+html[lang="ar"] .media-expand,
+html[lang="ar"] .form-row label {
   font-family: "Cairo", "IBM Plex Sans", Arial, sans-serif;
   font-style: normal;
   letter-spacing: 0;

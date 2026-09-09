@@ -108,8 +108,7 @@
     </section>
 
     <section class="work-section" id="work" aria-labelledby="work-title">
-      <div class="section-kicker" data-reveal-rise><span data-i18n="work.kicker">Selected work</span><span
-          class="kicker-index" aria-hidden="true">01 / 03</span></div>
+      <div class="section-kicker" data-reveal-rise><span data-i18n="work.kicker">Selected work</span></div>
       <h2 id="work-title" class="visually-hidden" data-i18n="work.kicker">Selected work</h2>
 
       <div class="project-grid">
@@ -262,8 +261,7 @@
     </section>
 
     <section class="about-section" id="about" aria-labelledby="about-title">
-      <div class="section-kicker" data-reveal-rise><span data-i18n="about.kicker">What I build</span><span
-          class="kicker-index" aria-hidden="true">02 / 03</span></div>
+      <div class="section-kicker" data-reveal-rise><span data-i18n="about.kicker">What I build</span></div>
       <div class="about-grid">
         <h2 id="about-title" data-reveal-rise data-i18n="about.heading">I build full-stack web applications with PHP and
           Laravel, with a
@@ -294,7 +292,7 @@
 
     <section class="background-section" aria-labelledby="background-title">
       <div class="section-kicker" data-reveal-rise><span id="background-title" data-i18n="background.kicker">Learning by
-          building</span><span class="kicker-index" aria-hidden="true">03 / 03</span></div>
+          building</span></div>
       <div class="background-list">
         <article data-reveal>
           <p class="background-kind" data-i18n="background.experience">Experience</p>
@@ -315,8 +313,43 @@
 
     <section class="contact-section" id="contact" aria-labelledby="contact-title">
       <p class="contact-kicker" data-reveal-rise data-i18n="contact.kicker">Get in touch</p>
-      <h2 id="contact-title" data-reveal-rise data-i18n="contact.heading">Have a project or opportunity? Let's talk.
+      <h2 id="contact-title" data-reveal-rise data-i18n="contact.heading">Have a project that needs building? I'll build
+        it.
       </h2>
+
+      <!--
+        Sends via FormSubmit (formsubmit.co) directly to
+        reijiivislam@gmail.com — no account, no backend, no database. The
+        very first real submission triggers a one-time confirmation email
+        to that address; click the link in it once and every submission
+        after that lands straight in the inbox.
+      -->
+      <form class="contact-form" data-reveal-rise action="https://formsubmit.co/reijiivislam@gmail.com" method="POST"
+        novalidate>
+        <div class="form-row">
+          <label for="cf-name" data-i18n="contact.form.name">Name</label>
+          <input type="text" id="cf-name" name="name" autocomplete="name" required>
+        </div>
+        <div class="form-row">
+          <label for="cf-email" data-i18n="contact.form.email">Email</label>
+          <input type="email" id="cf-email" name="email" autocomplete="email" required>
+        </div>
+        <div class="form-row form-row--full">
+          <label for="cf-message" data-i18n="contact.form.message">Message</label>
+          <textarea id="cf-message" name="message" rows="4" required></textarea>
+        </div>
+        <input type="hidden" name="_subject" value="New message from your portfolio site">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="text" name="_honey" class="form-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <div class="form-footer">
+          <button type="submit" class="form-submit">
+            <span data-i18n="contact.form.send">Send message</span> <span aria-hidden="true">→</span>
+          </button>
+          <p class="form-status" role="status" aria-live="polite"></p>
+        </div>
+      </form>
+
       <div class="contact-links" data-reveal-rise>
         <a href="mailto:aa.brahmi@ensta.edu.dz">aa.brahmi@ensta.edu.dz</a>
         <button id="copy-email" type="button" data-i18n="contact.copyEmail" data-i18n-copied="contact.copied"
@@ -334,7 +367,7 @@
     <span>© <span id="year"></span> <span data-i18n="name">Brahmi Abbes</span></span>
     <button class="lang-toggle lang-toggle-footer" id="lang-toggle-footer" type="button" aria-label="Switch language">
       <span class="lang-toggle-option" data-lang-option="ar">العربية</span>
-      <span class="lang-toggle-sep">·</span>
+      <span class="lang-toggle-sep">/</span>
       <span class="lang-toggle-option" data-lang-option="en">English</span>
     </button>
   </footer>
