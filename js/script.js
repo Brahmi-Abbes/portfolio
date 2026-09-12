@@ -235,18 +235,124 @@ if (!prefersReducedMotion && canHover) {
       magnetic.style.transform = '';
     });
   }
+}
 
-  // Project media frames tilt slightly toward the cursor, like a print
-  // held up to look at rather than a flat card.
-  document.querySelectorAll('[data-tilt]').forEach((el) => {
-    el.addEventListener('mousemove', (event) => {
-      const rect = el.getBoundingClientRect();
-      const x = (event.clientX - rect.left) / rect.width - 0.5;
-      const y = (event.clientY - rect.top) / rect.height - 0.5;
-      el.style.transform = `perspective(900px) rotateX(${(-y * 5).toFixed(2)}deg) rotateY(${(x * 6).toFixed(2)}deg)`;
+// Project cards fan out in shallow depth, like a hand of cards, and can be
+// dragged (mouse or touch) to bring the next one forward. Prev/next buttons
+// and dots give the same control without a pointer. The base CSS (no
+// "is-ready" class) is a plain stacked list, so if this throws for any
+// reason, every project stays fully visible and reachable regardless.
+(function initProjectStack() {
+  const stack = document.querySelector('[data-project-stack]');
+  if (!stack) return;
+
+  const track = stack.querySelector('.project-stack-track');
+  const cards = Array.from(track.querySelectorAll('.project-card'));
+  const viewport = stack.querySelector('.project-stack-viewport');
+  const dots = Array.from(stack.querySelectorAll('[data-stack-dot]'));
+  const prevBtn = stack.querySelector('[data-stack-prev]');
+  const nextBtn = stack.querySelector('[data-stack-next]');
+  if (cards.length < 2) return; // nothing to fan with 0-1 projects
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const PEEK = 0.62; // fraction of card width each neighbour is offset by — a "good chunk" peek
+
+  let active = 0;
+  let dragOffset = 0;
+  let dragStartX = null;
+
+  const cardWidth = () => cards[0].getBoundingClientRect().width || 400;
+
+  function render(animate) {
+    const w = cardWidth();
+    cards.forEach((card, i) => {
+      const raw = (i - active) + dragOffset / w;
+      const dist = Math.abs(raw);
+      const clamped = Math.max(-3, Math.min(3, raw));
+      const x = clamped * w * PEEK;
+      const y = Math.min(dist, 3) * 10;
+      const rot = clamped * 6;
+      const scale = Math.max(0.82, 1 - dist * 0.09);
+      const z = -dist * 70;
+      card.style.transition = animate && !reduceMotion
+        ? 'transform .5s cubic-bezier(.16,1,.3,1), opacity .4s ease'
+        : 'none';
+      card.style.transform = `translate3d(${x}px, ${y}px, ${z}px) rotateZ(${rot}deg) scale(${scale})`;
+      card.style.zIndex = String(200 - Math.round(dist * 10));
+      card.style.opacity = dist > 2.4 ? '0' : '1';
+      const isActive = i === active;
+      card.classList.toggle('is-active', isActive);
+      card.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+      card.querySelectorAll('a, button, video, summary').forEach((el) => {
+        el.tabIndex = isActive ? 0 : -1;
+      });
     });
-    el.addEventListener('mouseleave', () => {
-      el.style.transform = '';
+    dots.forEach((dot, i) => dot.setAttribute('aria-selected', String(i === active)));
+    if (viewport) {
+      viewport.style.transition = animate && !reduceMotion ? 'height .4s ease' : 'none';
+      viewport.style.height = `${cards[active].offsetHeight}px`;
+    }
+  }
+
+  function goTo(index) {
+    const nextIndex = Math.max(0, Math.min(cards.length - 1, index));
+    if (nextIndex !== active) {
+      const outgoingVideo = cards[active].querySelector('.project-video');
+      if (outgoingVideo) outgoingVideo.pause();
+    }
+    active = nextIndex;
+    dragOffset = 0;
+    render(true);
+  }
+
+  if (prevBtn) prevBtn.addEventListener('click', () => goTo(active - 1));
+  if (nextBtn) nextBtn.addEventListener('click', () => goTo(active + 1));
+  dots.forEach((dot, i) => dot.addEventListener('click', () => goTo(i)));
+
+  cards.forEach((card, i) => {
+    card.addEventListener('click', () => {
+      if (i !== active) goTo(i);
     });
   });
-}
+
+  track.addEventListener('pointerdown', (event) => {
+    if (event.target.closest('button, a, summary, video')) return;
+    dragStartX = event.clientX;
+    dragOffset = 0;
+    track.setPointerCapture(event.pointerId);
+    track.classList.add('is-dragging');
+  });
+
+  track.addEventListener('pointermove', (event) => {
+    if (dragStartX === null) return;
+    dragOffset = event.clientX - dragStartX;
+    render(false);
+  });
+
+  function endDrag() {
+    if (dragStartX === null) return;
+    const w = cardWidth();
+    const threshold = w * 0.16;
+    if (dragOffset > threshold) goTo(active - 1);
+    else if (dragOffset < -threshold) goTo(active + 1);
+    else {
+      dragOffset = 0;
+      render(true);
+    }
+    dragStartX = null;
+    track.classList.remove('is-dragging');
+  }
+
+  track.addEventListener('pointerup', endDrag);
+  track.addEventListener('pointercancel', endDrag);
+
+  stack.addEventListener('keydown', (event) => {
+    if (event.key === 'ArrowLeft') goTo(active - 1);
+    if (event.key === 'ArrowRight') goTo(active + 1);
+  });
+
+  window.addEventListener('resize', () => render(false));
+
+  stack.classList.add('is-ready');
+  render(false);
+}());
