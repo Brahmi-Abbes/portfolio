@@ -633,14 +633,6 @@ h1 {
   aspect-ratio: 1.87 / 1;
   object-fit: cover;
   background: var(--dark);
-  /* Muted at rest, true color on engagement — the reveal is the interaction,
-     but it never lies about what the actual product looks like. */
-  filter: grayscale(.6) contrast(1.03) brightness(.97);
-  transition: filter .6s var(--ease);
-}
-
-.project-media:hover .project-video {
-  filter: none;
 }
 
 .media-expand {
@@ -782,7 +774,7 @@ h1 {
 .skills-list.is-visible .skill-chip:hover {
   border-color: var(--cat-color, var(--accent));
   color: var(--cat-color, var(--accent));
-  transform: translateY(-3px) rotate(-1.5deg);
+  transform: translateY(-5px) rotate(-2.5deg);
 }
 
 /* Native disclosure for the deeper case-study detail — a real control,
@@ -888,14 +880,12 @@ h1 {
   object-fit: contain;
   object-position: center;
   background: var(--dark);
-  filter: grayscale(.6) contrast(1.03) brightness(.97);
-  transition: transform .5s var(--ease), opacity .4s var(--ease), filter .5s var(--ease);
+  transition: transform .5s var(--ease), opacity .4s var(--ease);
 }
 
 .media-strip button:hover img {
   transform: scale(1.05);
   opacity: 1;
-  filter: none;
 }
 
 .media-strip button::after {
@@ -983,7 +973,7 @@ h1 {
 .skills-list dt {
   font-family: var(--font-display);
   font-style: italic;
-  font-size: .92rem;
+  font-size: 1.05rem;
   font-weight: 400;
   color: var(--cat-color, var(--accent));
 }
@@ -994,31 +984,9 @@ h1 {
   align-items: baseline;
   gap: .5rem 1.35rem;
   margin: 0;
+  font-size: 1.15rem;
   font-weight: 600;
   letter-spacing: -.01em;
-}
-
-/* Size cascades from Backend down to Tools — a real hierarchy that
-   matches how the intro actually describes the work, not four
-   identically-weighted rows of same-size tags. */
-.skills-list>div:nth-child(1) dd {
-  font-size: 1.05rem;
-}
-
-.skills-list>div:nth-child(2) dd {
-  font-size: .95rem;
-}
-
-.skills-list>div:nth-child(3) dd {
-  font-size: .88rem;
-}
-
-.skills-list>div:nth-child(4) dd {
-  font-size: .8rem;
-}
-
-.skills-list>div:nth-child(4) .skill-chip {
-  color: var(--muted);
 }
 
 .learning-note {
