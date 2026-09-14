@@ -176,8 +176,6 @@
                 </details>
 
                 <div class="project-actions">
-                  <a class="text-link" href="https://github.com/Brahmi-Abbes/pharmacera" target="_blank"
-                    rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
                   <a class="text-link text-link-strong" href="https://pharmacera.onrender.com/" target="_blank"
                     rel="noopener noreferrer"><span data-i18n="project.liveDemo">Live demo</span> <span
                       aria-hidden="true">↗</span></a>
@@ -255,11 +253,68 @@
               </div>
             </article>
 
-            <!--
-              Third card goes here later — just copy one <article class="project-card"> block above,
-              swap the content/media/links, and it drops into the stack automatically (also add one
-              more <button class="stack-dot"> below).
-            -->
+            <article class="project-card" aria-labelledby="sketchrush-title">
+              <div class="project-media">
+                <video class="project-video" controls preload="metadata" poster="assets/images/projects/sketchrush.PNG"
+                  aria-label="SketchRush project walkthrough">
+                  <source src="assets/videos/sketchrush-demo.mp4" type="video/mp4">
+                  Your browser does not support this video.
+                </video>
+                <button class="media-expand shot-trigger" type="button" data-gallery="sketchrush" data-index="0"
+                  aria-label="Open SketchRush demo in the full-screen viewer"><span class="play-triangle"
+                    aria-hidden="true"></span> <span data-i18n="project.openLarger">Open larger</span></button>
+              </div>
+
+              <div class="project-card-body">
+                <p class="project-type" data-i18n="sketchrush.type">Real-time multiplayer game</p>
+                <h3 id="sketchrush-title">SketchRush</h3>
+                <p class="project-summary" data-i18n="sketchrush.summary">A real-time drawing and guessing game for
+                  friends, with an original clue system and scoring streaks—powered by Laravel, Reverb and Redis.</p>
+
+                <div class="tech-tags" aria-label="SketchRush technologies">
+                  <span>PHP</span><span>Laravel</span><span>Reverb</span><span>Redis</span><span>MySQL</span><span>JavaScript</span><span>Tailwind
+                    CSS</span>
+                </div>
+
+                <details class="project-more">
+                  <summary><span data-i18n="project.readMore">How it's built</span></summary>
+                  <div class="project-more-body">
+                    <div class="detail-block">
+                      <p class="detail-label" data-i18n="project.whatItDoes">What it does</p>
+                      <p data-i18n="sketchrush.whatItDoes">Players join a room with a 6-character code, take turns
+                        drawing a secret word on a shared canvas, and race to guess it first. Clues, passive letter
+                        reveals and consecutive-guess streaks combine into a speed-based scoring system, ending in a
+                        final leaderboard.</p>
+                    </div>
+                    <div class="detail-block">
+                      <p class="detail-label" data-i18n="project.builtAround">Built around</p>
+                      <p data-i18n="sketchrush.builtAround">Laravel Reverb WebSockets for real-time drawing sync and
+                        presence, Redis for all live game state, and server-authoritative round timers and word
+                        validation so no game-ending logic ever depends on a single browser staying open.</p>
+                    </div>
+                    <div class="project-engineering">
+                      <p class="detail-label" data-i18n="sketchrush.engineering.title">Engineering decisions</p>
+                      <ul class="engineering-list">
+                        <li data-i18n="sketchrush.engineering.1">The secret word never reaches the browser—not even
+                          the drawer's—word choices go out over private per-player channels, and correctness is
+                          validated entirely server-side.</li>
+                        <li data-i18n="sketchrush.engineering.2">Round timing runs on server-scheduled delayed jobs
+                          tagged with an incrementing token, so a stale job from an early-ended round can detect it's
+                          obsolete and safely do nothing.</li>
+                        <li data-i18n="sketchrush.engineering.3">Redis and MySQL are split by lifetime: anything only
+                          needed while a game is live stays in Redis, and only final results are written to MySQL once,
+                          at game end.</li>
+                      </ul>
+                    </div>
+                  </div>
+                </details>
+
+                <div class="project-actions">
+                  <a class="text-link text-link-strong" href="https://github.com/Brahmi-Abbes/SketchRush"
+                    target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+                </div>
+              </div>
+            </article>
           </div>
         </div>
 
@@ -274,6 +329,9 @@
             </button>
             <button type="button" class="stack-dot" role="tab" aria-selected="false" data-stack-dot="1">
               <span class="visually-hidden">DevDz</span>
+            </button>
+            <button type="button" class="stack-dot" role="tab" aria-selected="false" data-stack-dot="2">
+              <span class="visually-hidden">SketchRush</span>
             </button>
           </div>
           <button type="button" class="stack-nav stack-next" data-stack-next>

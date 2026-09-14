@@ -31,6 +31,9 @@ const galleries = {
     { type: 'image', src: 'assets/images/projects/devdz-02.png', alt: 'DevDz job search view' },
     { type: 'image', src: 'assets/images/projects/devdz-03.png', alt: 'DevDz new post form' },
   ],
+  sketchrush: [
+    { type: 'video', src: 'assets/videos/sketchrush-demo.mp4', poster: 'assets/images/projects/sketchrush.PNG', alt: 'SketchRush demo video' },
+  ],
 };
 
 const lightbox = document.getElementById('lightbox');
@@ -313,6 +316,10 @@ if (!prefersReducedMotion && canHover) {
     card.addEventListener('click', () => {
       if (i !== active) goTo(i);
     });
+    const details = card.querySelector('details.project-more');
+    if (details) {
+      details.addEventListener('toggle', () => render(true));
+    }
   });
 
   track.addEventListener('pointerdown', (event) => {
