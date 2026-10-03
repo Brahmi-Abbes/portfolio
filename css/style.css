@@ -910,6 +910,104 @@ h1 {
   opacity: 1;
 }
 
+.services-section {
+  background: var(--paper);
+  border-top: 1px solid var(--line);
+  padding: clamp(4.5rem, 9vw, 8.5rem) var(--gutter);
+}
+
+/* An italic framing line, not a bold roman headline — this deliberately
+   doesn't match About's heading treatment, so the two sections read as
+   related but distinct rather than the same component reused twice. */
+.services-statement {
+  max-width: 34ch;
+  margin: clamp(2rem, 5vw, 3rem) 0 0;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(1.8rem, 3.6vw, 2.8rem);
+  line-height: 1.25;
+  letter-spacing: -.01em;
+}
+
+/* Same physical card language as Work's project cards (paper-deep,
+   thin elevation shadow, sharp corners, static tilt that straightens on
+   hover) — but static, not draggable. One interactive card mechanism on
+   the page is a deliberate choice; four is a gimmick. Offset + alternating
+   tilt gives real asymmetry instead of a flat 2x2 grid. */
+.services-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(2.5rem, 5vw, 3.5rem) clamp(1.75rem, 4vw, 3rem);
+  margin: clamp(3rem, 6vw, 4.5rem) 0 0;
+}
+
+.service-card {
+  --tilt: -1deg;
+  position: relative;
+  padding: clamp(1.9rem, 3.2vw, 2.4rem);
+  background: var(--paper-deep);
+  box-shadow: 0 22px 40px -26px rgba(30, 41, 39, .4);
+  transform: rotate(var(--tilt));
+  transition: transform .4s var(--ease), box-shadow .4s var(--ease), opacity .6s var(--ease);
+}
+
+.service-card:nth-child(2n) {
+  --tilt: 1deg;
+  margin-top: clamp(1.5rem, 3vw, 2.25rem);
+  transition-delay: .06s;
+}
+
+.service-card:nth-child(3) {
+  transition-delay: .12s;
+}
+
+.service-card:nth-child(4) {
+  transition-delay: .18s;
+}
+
+.service-card:hover {
+  transform: rotate(0deg) translateY(-6px);
+  box-shadow: 0 30px 54px -24px rgba(30, 41, 39, .48);
+}
+
+.service-name {
+  margin: 0 0 .7rem;
+  color: var(--ink);
+  font-weight: 600;
+  font-size: clamp(1.3rem, 2.2vw, 1.6rem);
+  letter-spacing: -.01em;
+  line-height: 1.15;
+  transition: color .3s var(--ease);
+}
+
+.service-card:hover .service-name {
+  color: var(--accent-dark);
+}
+
+.service-desc {
+  margin: 0;
+  color: #43504b;
+  font-size: .95rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 760px) {
+  .services-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .service-card {
+    transform: none;
+    margin-top: 0;
+  }
+
+  .service-card:hover {
+    transform: translateY(-4px);
+  }
+}
+
 .about-section {
   border-top: 1px solid var(--line);
 }
@@ -1426,7 +1524,8 @@ html[lang="ar"] .lang-toggle,
 html[lang="ar"] .tech-tags span,
 html[lang="ar"] .skill-chip,
 html[lang="ar"] .media-expand,
-html[lang="ar"] .form-row label {
+html[lang="ar"] .form-row label,
+html[lang="ar"] .services-statement {
   font-family: "Cairo", "IBM Plex Sans", Arial, sans-serif;
   font-style: normal;
   letter-spacing: 0;
