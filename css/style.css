@@ -996,15 +996,29 @@ h1 {
 @media (max-width: 760px) {
   .services-grid {
     grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
 
+  /* Dropping tilt to zero and keeping the same wide desktop shadow at
+     full viewport width is what made four stacked cards look like
+     generic flat boxes — a smaller tilt and a tighter shadow keep the
+     same "handled paper" character at this size instead. */
   .service-card {
-    transform: none;
+    padding: 1.5rem 1.6rem;
     margin-top: 0;
+    box-shadow: 0 10px 20px -16px rgba(30, 41, 39, .32);
+  }
+
+  .service-card:nth-child(odd) {
+    --tilt: -0.7deg;
+  }
+
+  .service-card:nth-child(2n) {
+    --tilt: 0.7deg;
   }
 
   .service-card:hover {
-    transform: translateY(-4px);
+    transform: rotate(0deg) translateY(-3px);
   }
 }
 
