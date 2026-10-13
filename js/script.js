@@ -20,19 +20,19 @@ if (menuToggle && mobileMenu) {
 
 const galleries = {
   pharmacera: [
-    { type: 'video', src: 'assets/videos/pharmacera-demo.mp4', poster: 'assets/images/projects/pharmacera-poster.png', alt: 'Pharmacera demo video' },
-    { type: 'image', src: 'assets/images/projects/pharmacera-01.png', alt: 'Pharmacera sale entry screen' },
-    { type: 'image', src: 'assets/images/projects/pharmacera-02.png', alt: 'Pharmacera audit log' },
-    { type: 'image', src: 'assets/images/projects/pharmacera-03.png', alt: 'Pharmacera users management screen' },
+    { type: 'video', src: 'assets/videos/pharmacera-demo.mp4', poster: 'images/projects/pharmacera-poster.png', alt: 'Pharmacera demo video' },
+    { type: 'image', src: 'images/projects/pharmacera-01.png', alt: 'Pharmacera sale entry screen' },
+    { type: 'image', src: 'images/projects/pharmacera-02.png', alt: 'Pharmacera audit log' },
+    { type: 'image', src: 'images/projects/pharmacera-03.png', alt: 'Pharmacera users management screen' },
   ],
   devdz: [
-    { type: 'video', src: 'assets/videos/devdz-demo.mp4', poster: 'assets/images/projects/devdz-poster.png', alt: 'DevDz demo video' },
-    { type: 'image', src: 'assets/images/projects/devdz-01.png', alt: 'DevDz question and comments view' },
-    { type: 'image', src: 'assets/images/projects/devdz-02.png', alt: 'DevDz job search view' },
-    { type: 'image', src: 'assets/images/projects/devdz-03.png', alt: 'DevDz new post form' },
+    { type: 'video', src: 'assets/videos/devdz-demo.mp4', poster: 'images/projects/devdz-poster.png', alt: 'DevDz demo video' },
+    { type: 'image', src: 'images/projects/devdz-01.png', alt: 'DevDz question and comments view' },
+    { type: 'image', src: 'images/projects/devdz-02.png', alt: 'DevDz job search view' },
+    { type: 'image', src: 'images/projects/devdz-03.png', alt: 'DevDz new post form' },
   ],
   sketchrush: [
-    { type: 'video', src: 'assets/videos/sketchrush-demo.mp4', poster: 'assets/images/projects/sketchrush.PNG', alt: 'SketchRush demo video' },
+    { type: 'video', src: 'assets/videos/sketchrush-demo.mp4', poster: 'images/projects/sketchrush.PNG', alt: 'SketchRush demo video' },
   ],
 };
 

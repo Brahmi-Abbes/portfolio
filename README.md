@@ -22,8 +22,9 @@ css/
 js/
   script.js                    # source JS
   script.min.js                 # minified JS (generated, committed — what index.html loads)
+images/
+  projects/                     # project screenshots + video posters
 assets/
-  images/projects/              # project screenshots + video posters
   videos/                        # project demo videos
   Brahmi_Abbes_CV.pdf
 tailwind.config.js
